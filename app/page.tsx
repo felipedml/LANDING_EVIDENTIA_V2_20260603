@@ -854,12 +854,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <span class="sc-cSHVUG sc-hMqMXs jqWiNE">
-        <div>👇 ASSISTA ABAIXO ANTES QUE SAIA DO AR&nbsp;👇</div>
-      </span>
-    </div>
-
+  
       {/* SEÇÃO VÍDEO COMPLEMENTAR — AULA GRATUITA - CASO DE USO REAL: PESQUISA BIBLIOGRÁFICA EM SEGUNDOS */}
       <section className="py-16 md:py-24 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-secondary)" }}>
         <div className="max-w-7xl mx-auto px-6">
