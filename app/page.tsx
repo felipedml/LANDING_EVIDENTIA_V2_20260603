@@ -855,6 +855,52 @@ export default function Home() {
         </div>
       </section>
 
+      <span class="sc-cSHVUG sc-hMqMXs jqWiNE">
+        <div>👇 ASSISTA ABAIXO ANTES QUE SAIA DO AR&nbsp;👇</div>
+      </span>
+    </div>
+
+      {/* SEÇÃO VÍDEO COMPLEMENTAR — AULA GRATUITA - CASO DE USO REAL: PESQUISA BIBLIOGRÁFICA EM SEGUNDOS */}
+      <section className="py-16 md:py-24 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-secondary)" }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
+            <span className="text-[10px] sm:text-xs font-mono-jet font-bold text-[var(--gold-vibrant)] uppercase tracking-widest bg-[var(--gold-vibrant)]/10 px-3 py-1.5 rounded-full border border-[var(--gold-vibrant)]/20 animate-pulse inline-block">
+              ✦ Caso de Uso Real
+            </span>
+            <h2 className="font-jakarta font-black text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] mt-4 transition-colors">
+              Veja o EvidentIA em Ação
+            </h2>
+            <p className="mt-4 text-base md:text-lg text-[var(--text-secondary)] leading-relaxed transition-colors">
+              Um exemplo real de como pesquisadores utilizam o EvidentIA para acelerar sua revisão de literatura e produzir resultados que impressionam bancas e orientadores.
+            </p>
+          </div>
+
+          <div 
+            className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border bg-black aspect-video transition-all duration-300" 
+            style={{ borderColor: "var(--card-border)" }}
+          >
+            <iframe 
+              className="w-full h-full border-0"
+              src="https://www.youtube.com/embed/abMIPIB5lcE" 
+              title="EvidentIA em Ação — Caso de Uso Real" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowFullScreen
+            />
+          </div>
+
+          <div className="mt-10 md:mt-14 text-center">
+            <a 
+              href="https://chk.eduzz.com/6W4G1RYY0Z" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-gold pulse-glow inline-block rounded-2xl px-12 py-5 text-base md:text-lg font-extrabold shadow-[0_10px_40px_rgba(232,189,86,0.3)] transition-all hover:-translate-y-1 cursor-pointer max-w-xs md:max-w-md w-full"
+            >
+              Quero Garantir o Evidentia --&gt;
+            </a>
+          </div>
+        </div>
+      </section>
+      
       {/* SEÇÃO TOUR VIRTUAL — VÍDEO COMPLETO */}
       <section className="py-16 md:py-24 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-primary)" }}>
         <div className="max-w-7xl mx-auto px-6">
@@ -878,47 +924,6 @@ export default function Home() {
               className="w-full h-full border-0"
               src="https://www.youtube.com/embed/_nzGxswKnn8" 
               title="Tour Virtual pelo EvidentIA" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowFullScreen
-            />
-          </div>
-
-          <div className="mt-10 md:mt-14 text-center">
-            <a 
-              href="https://chk.eduzz.com/6W4G1RYY0Z" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="btn-gold pulse-glow inline-block rounded-2xl px-12 py-5 text-base md:text-lg font-extrabold shadow-[0_10px_40px_rgba(232,189,86,0.3)] transition-all hover:-translate-y-1 cursor-pointer max-w-xs md:max-w-md w-full"
-            >
-              Quero Garantir o Evidentia --&gt;
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO VÍDEO COMPLEMENTAR — CASO DE USO REAL */}
-      <section className="py-16 md:py-24 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-secondary)" }}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
-            <span className="text-[10px] sm:text-xs font-mono-jet font-bold text-[var(--gold-vibrant)] uppercase tracking-widest bg-[var(--gold-vibrant)]/10 px-3 py-1.5 rounded-full border border-[var(--gold-vibrant)]/20 animate-pulse inline-block">
-              ✦ Caso de Uso Real
-            </span>
-            <h2 className="font-jakarta font-black text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] mt-4 transition-colors">
-              Veja o EvidentIA em Ação
-            </h2>
-            <p className="mt-4 text-base md:text-lg text-[var(--text-secondary)] leading-relaxed transition-colors">
-              Um exemplo real de como pesquisadores utilizam o EvidentIA para acelerar sua revisão de literatura e produzir resultados que impressionam bancas e orientadores.
-            </p>
-          </div>
-
-          <div 
-            className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border bg-black aspect-video transition-all duration-300" 
-            style={{ borderColor: "var(--card-border)" }}
-          >
-            <iframe 
-              className="w-full h-full border-0"
-              src="https://www.youtube.com/embed/abMIPIB5lcE" 
-              title="EvidentIA em Ação — Caso de Uso Real" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
               allowFullScreen
             />
