@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Skills Genius | A Fábrica de Automação Jurídica com IA — Felipe Asensi</title>
+    <meta name="description" content="Aprenda, copie, edite e baixe Skills prontas para automatizar seu escritório de advocacia no Claude. O único app interativo de IA para advogados brasileiros. Por Felipe Asensi.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            /* Teal scale */
+                            blue:   '#15302A',
+                            teal:   '#264D44',
+                            /* Gold scale */
+                            orange: '#D4A346',
+                            gold:   '#F2D57E',
+                            /* UI */
+                            accent: '#3B6B60',
+                            light:  '#0D1A16',
+                            dark:   '#080F0C',
+                            gray:   '#1E3830',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body:    ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass':       '0 4px 30px rgba(0,0,0,0.3)',
+                        'glass-hover': '0 20px 40px rgba(212,163,70,0.12)',
+                        'soft':        '0 2px 10px rgba(0,0,0,0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* =============================================
+           BASE — mesmo globals.css do design system
+        ============================================= */
+        /* ── CSS Custom Properties ── */
+        :root {
+            --color-teal-dark:       #15302A;
+            --color-teal-base:       #264D44;
+            --color-teal-light:      #3B6B60;
+            --color-gold-dark:       #9D7326;
+            --color-gold-base:       #D4A346;
+            --color-gold-light:      #F2D57E;
+            --color-transition-olive:#858349;
+            --gradient-brand-main:   linear-gradient(135deg, #15302A 0%, #264D44 30%, #858349 55%, #D4A346 80%, #F2D57E 100%);
+            --gradient-brand-gold:   linear-gradient(45deg,  #9D7326 0%, #D4A346 40%, #F2D57E 70%, #C69335 100%);
+        }
+        body {
+            background-color: #080F0C;
+            color: #EDE8DC;
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button, .tilt-card, input { cursor: none !important; }
+            .custom-cursor, .custom-cursor-dot {
+                position: fixed; top: 0; left: 0;
+                transform: translate(-50%, -50%);
+                border-radius: 9999px; pointer-events: none; z-index: 99999;
+            }
+            .custom-cursor {
+                width: 28px; height: 28px;
+                border: 1.5px solid rgba(212,163,70,0.85);
+                box-shadow: rgba(212,163,70,0.15) 0 0 0 2px, rgba(212,163,70,0.35) 0 0 30px;
+                backdrop-filter: blur(1px); opacity: 0.9;
+                transition: transform .06s, opacity .2s, width .2s, height .2s;
+            }
+            .custom-cursor-dot {
+                width: 6px; height: 6px; background: rgba(212,163,70,0.95);
+                box-shadow: rgba(212,163,70,0.7) 0 0 12px; opacity: 0.9;
+                transition: transform .06s, opacity .2s;
+            }
+            body.cursor-hover .custom-cursor {
+                border-color: #D4A346; background: rgba(212,163,70,0.12);
+            }
+        }
+
+        /* Ambient Blobs */
+        .ambient-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2; overflow: hidden; background: #080F0C;
+        }
+        .blob {
+            position: absolute; filter: blur(100px);
+            opacity: 0.35; border-radius: 50%;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .blob-1 { background: #15302A; width: 65vw; height: 65vw; top: -15vw; right: -10vw; animation-duration: 25s; }
+        .blob-2 { background: #264D44; width: 50vw; height: 50vw; bottom: -20vw; left: -10vw; animation-duration: 30s; animation-delay: -5s; }
+        .blob-3 { background: #9D7326; width: 35vw; height: 35vw; top: 35%; left: 28%; opacity: 0.20; animation-duration: 40s; }
+        @keyframes float {
+            0%   { transform: translate(0,0) scale(1); }
+            33%  { transform: translate(5%,5%) scale(1.05); }
+            66%  { transform: translate(-5%,8%) scale(0.95); }
+            100% { transform: translate(0,0) scale(1); }
+        }
+
+        /* Glassmorphism — dark mode */
+        .glass-panel {
+            background: rgba(21,48,42,0.55);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(212,163,70,0.18);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.25);
+            transition: all .4s cubic-bezier(.16,1,.3,1);
+        }
+        .glass-panel:hover {
+            box-shadow: 0 20px 40px rgba(212,163,70,0.10);
+            background: rgba(38,77,68,0.65);
+            border-color: rgba(212,163,70,0.35);
+        }
+        .glass-dark {
+            background: rgba(8,15,12,0.88);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(212,163,70,0.12);
+            color: #EDE8DC;
+        }
+
+        /* Animated Glow Border — gold/teal */
+        .animated-glow-border { position: relative; z-index: 1; }
+        .animated-glow-border::before {
+            content: ''; position: absolute; inset: -2px; z-index: -1;
+            background: linear-gradient(90deg, #D4A346, #3B6B60, #858349, #F2D57E, #D4A346);
+            background-size: 300% auto;
+            border-radius: inherit;
+            animation: gradientRotate 3s linear infinite;
+            opacity: 0; transition: opacity .4s ease;
+        }
+        .animated-glow-border:hover::before { opacity: 1; }
+        @keyframes gradientRotate {
+            0%   { background-position: 0% center; }
+            100% { background-position: 300% center; }
+        }
+
+        /* Marquee */
+        .animate-marquee         { animation: marquee 35s linear infinite; }
+        .animate-marquee-reverse { animation: marquee 35s linear infinite reverse; }
+        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+        .text-stroke-brand { -webkit-text-stroke: 1px #264D44; color: transparent; }
+
+        /* Text Gradient — teal→olive→gold */
+        .text-gradient {
+            background: var(--gradient-brand-main);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        /* Metallic gold text */
+        .text-gold {
+            background: var(--gradient-brand-gold);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        /* Tilt & Reveal */
+        .tilt-wrapper { perspective: 1200px; }
+        .tilt-card    { transform-style: preserve-3d; will-change: transform; transition: transform .1s ease-out; }
+        .tilt-card-content { transform: translateZ(40px); }
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+        .reveal-scale { opacity: 0; transform: scale(0.92); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #080F0C; }
+        ::-webkit-scrollbar-thumb { background: #264D44; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4A346; }
+
+        /* WhatsApp pulse */
+        .bot-pulse {
+            box-shadow: 0 0 0 0 rgba(37,211,102,0.7);
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0%   { transform: scale(.95); box-shadow: 0 0 0 0 rgba(37,211,102,0.7); }
+            70%  { transform: scale(1);   box-shadow: 0 0 0 15px rgba(37,211,102,0); }
+            100% { transform: scale(.95); box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+        }
+
+        /* CTA pulse glow */
+        .cta-pulse {
+            animation: ctaPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes ctaPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212,163,70,0.5), 0 10px 40px rgba(212,163,70,0.3); }
+            50%       { box-shadow: 0 0 0 14px rgba(212,163,70,0), 0 10px 40px rgba(212,163,70,0.55); }
+        }
+
+        /* Hero badge blink */
+        .badge-blink { animation: badgeBlink 1.4s ease-in-out infinite; }
+        @keyframes badgeBlink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.3; }
+        }
+
+        /* Matrix canvas */
+        .global-matrix {
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        /* Section divider */
+        .section-divider {
+            clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+        }
+
+        /* ── Logo Animada (Cinematic Premium) ── */
+        .cinematic-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 320px;
+            height: 320px;
+            perspective: 800px; /* Para as órbitas 3D */
+        }
+        
+        /* Deep ambient core glow */
+        .cinematic-core {
+            position: absolute;
+            inset: -10px;
+            background: radial-gradient(circle, rgba(212,163,70,0.12) 0%, rgba(38,77,68,0.06) 40%, transparent 65%);
+            animation: coreBreathe 6s ease-in-out infinite;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* 3D Orbit Ring */
+        .cinematic-orbit {
+            position: absolute;
+            inset: 20px;
+            border: 1px solid rgba(212,163,70,0.25);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            transform: rotateX(70deg) rotateY(15deg);
+            animation: orbitSpin 12s linear infinite;
+            pointer-events: none;
+        }
+        .cinematic-orbit::after {
+            content: '';
+            position: absolute;
+            top: -4px; left: 50%;
+            width: 8px; height: 8px;
+            background: #F2D57E;
+            border-radius: 50%;
+            /* rotate backwards to face camera */
+            transform: translateX(-50%) rotateX(-70deg) rotateY(-15deg);
+            box-shadow: 0 0 16px 4px rgba(242,213,126,0.85);
+        }
+
+        /* Anamorphic Lens Flare */
+        .cinematic-flare {
+            position: absolute;
+            width: 140%;
+            height: 2px;
+            left: -20%;
+            background: linear-gradient(90deg, transparent 0%, rgba(242,213,126,0.6) 50%, transparent 100%);
+            box-shadow: 0 0 25px 3px rgba(212,163,70,0.5);
+            opacity: 0;
+            animation: flareFlash 8s ease-in-out infinite;
+            z-index: 20;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        /* Main Floating Logo */
+        .cinematic-logo-wrap {
+            position: relative;
+            z-index: 10;
+            animation: cinematicFloat 6s ease-in-out infinite;
+        }
+        .cinematic-logo-wrap img {
+            width: 100%;
+            height: auto;
+            /* Sombra profunda para destacar do fundo */
+            filter: drop-shadow(0 0 12px rgba(212,163,70,0.5))
+                    drop-shadow(0 20px 30px rgba(8,15,12,0.9));
+            animation: cinematicGlow 6s ease-in-out infinite;
+        }
+
+        /* Cinematic Particles */
+        .cinematic-particle {
+            position: absolute;
+            background: #F2D57E;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(242,213,126,0.7);
+            animation: cinematicDrift linear infinite;
+            pointer-events: none;
+        }
+
+        /* Keyframes */
+        @keyframes coreBreathe {
+            0%, 100% { transform: scale(1);   opacity: 0.7; filter: blur(8px); }
+            50%      { transform: scale(1.1); opacity: 1;   filter: blur(14px); }
+        }
+        @keyframes orbitSpin {
+            from { transform: rotateX(70deg) rotateY(15deg) rotateZ(0deg); }
+            to   { transform: rotateX(70deg) rotateY(15deg) rotateZ(360deg); }
+        }
+        @keyframes flareFlash {
+            0%, 45%, 55%, 100% { opacity: 0; transform: scaleX(0.4); }
+            50%                { opacity: 1; transform: scaleX(1.1); }
+        }
+        @keyframes cinematicFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50%      { transform: translateY(-16px) rotate(1.5deg); }
+        }
+        @keyframes cinematicGlow {
+            0%, 100% { filter: drop-shadow(0 0 12px rgba(212,163,70,0.4)) drop-shadow(0 20px 25px rgba(8,15,12,0.9)); }
+            50%      { filter: drop-shadow(0 0 32px rgba(242,213,126,0.65)) drop-shadow(0 25px 40px rgba(8,15,12,0.7)); }
+        }
+        @keyframes cinematicDrift {
+            0%   { opacity: 0; transform: translate3d(0, 0, 0) scale(0); }
+            20%  { opacity: 1; }
+            80%  { opacity: 0.5; }
+            100% { opacity: 0; transform: translate3d(var(--tx), var(--ty), var(--tz)) scale(1.5); }
+        }
+    </style>
+</head>
+
+<body class="font-body antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- Ambient Blobs -->
+    <div class="ambient-canvas">
+        <div class="blob blob-1" id="parallax-blob-1"></div>
+        <div class="blob blob-2" id="parallax-blob-2"></div>
+        <div class="blob blob-3" id="parallax-blob-3"></div>
+    </div>
+
+    <!-- ====================================================
+         HEADER FIXO
+    ==================================================== -->
+    <header class="fixed top-0 left-0 w-full z-50 p-4 transition-all duration-300" id="main-header">
+        <div class="max-w-7xl mx-auto glass-panel rounded-2xl px-6 py-3 flex items-center justify-between">
+
+            <!-- Logo Felipe Asensi -->
+            <a href="https://www.felipeasensi.com/" target="_blank" class="flex items-center gap-2 w-44 flex-shrink-0">
+                <img src="./felipeasensi.com/img/Logo-b-Felipe-Asensi.png"
+                     alt="Felipe Asensi"
+                     class="w-full object-contain"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <!-- Fallback texto caso imagem não carregue -->
+                <span class="hidden font-heading font-black text-brand-dark text-lg">Felipe<span class="text-brand-orange">Asensi</span></span>
+            </a>
+
+            <!-- Badge produto (centro) -->
+            <div class="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-[#D4A346]/25">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 badge-blink shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                <span class="text-xs font-heading font-bold text-[#F2D57E] uppercase tracking-widest">Claude Skills Genius</span>
+                <span class="bg-[#D4A346] text-[#080F0C] text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ml-1">NOVO</span>
+            </div>
+
+            <!-- CTA header -->
+            <a href="#oferta"
+               id="header-cta"
+               class="hidden lg:inline-flex items-center gap-2 bg-[#D4A346] text-[#080F0C] font-heading font-bold text-sm px-5 py-2.5 rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(212,163,70,0.45)] hover:bg-[#F2D57E]">
+                Quero Acessar
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- WhatsApp FAB -->
+    <a href="https://wa.me/557130275587" target="_blank"
+       class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl bot-pulse hover:scale-110 transition-transform">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+    </a>
+
+    <main>
+        <!-- ============================================================
+             DOBRA 1 — HERO
+        ============================================================ -->
+        <section id="hero" class="relative min-h-screen flex flex-col pt-24 overflow-hidden">
+
+            <!-- Matrix canvas background (mesmo padrão do index.html) -->
+            <canvas class="global-matrix absolute top-0 left-0 w-full h-full z-0 pointer-events-none" id="matrix-canvas"></canvas>
+
+            <div class="max-w-7xl mx-auto px-6 w-full relative z-10 flex-1 flex items-center py-16">
+                <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
+
+                    <!-- ── COLUNA ESQUERDA: COPY ── -->
+                    <div class="space-y-7">
+
+                        <!-- Super Promessa / Pré-Headline Badge -->
+                        <div class="reveal-scale">
+                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-[#D4A346]/25 w-max">
+                                <span class="w-2 h-2 rounded-full bg-[#D4A346] badge-blink shadow-[0_0_10px_rgba(212,163,70,0.8)]"></span>
+                                <span class="text-xs font-heading font-black text-[#D4A346] uppercase tracking-[0.15em]">
+                                    A Fábrica de Automação Jurídica
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Headline Principal -->
+                        <div class="overflow-hidden">
+                            <h1 class="reveal-text font-heading text-5xl md:text-6xl xl:text-7xl font-black leading-[1.06] tracking-tight text-[#EDE8DC]">
+                                Pare de digitar.<br>
+                                <span class="text-gradient">Comece a automatizar</span><br>
+                                seu escritório.
+                            </h1>
+                        </div>
+
+                        <!-- Sub-headline -->
+                        <p class="reveal-up font-body text-base md:text-lg text-[#A8B8B2] max-w-lg leading-relaxed">
+                            O <strong>Claude Skills Genius</strong> é o único app brasileiro onde você aprende, edita e <strong class="text-[#F2D57E]">baixa Skills prontas</strong> para o Claude — e transforma horas de trabalho repetitivo em minutos.
+                        </p>
+
+                        <!-- CTA Primário -->
+                        <div class="reveal-up flex flex-col sm:flex-row gap-4 items-start">
+                            <a href="#oferta" id="hero-cta"
+                               class="cta-pulse flex items-center justify-center gap-3 bg-[#D4A346] text-[#080F0C] font-heading font-black text-sm md:text-base px-8 py-4 rounded-2xl transition-all hover:-translate-y-1 hover:bg-[#F2D57E] shadow-[0_10px_40px_rgba(212,163,70,0.3)] w-full sm:w-auto">
+                                <span>👉</span>
+                                <span>QUERO ACESSAR O APP</span>
+                            </a>
+                        </div>
+
+                        <!-- Trust Signal Rapido -->
+                        <div class="reveal-up flex flex-wrap items-center gap-3 text-sm text-[#7A9490] font-medium pt-2">
+                            <span class="flex items-center gap-1.5"><span class="text-emerald-400">🔒</span> Acesso Imediato</span>
+                            <span class="text-[#264D44]">•</span>
+                            <span>Mão na Massa</span>
+                            <span class="text-[#264D44]">•</span>
+                            <span class="flex items-center gap-1"><span>⭐⭐⭐⭐⭐</span> <strong class="text-[#A8B8B2]">+16k alunos</strong></span>
+                        </div>
+
+                        <!-- Logos de Autoridade (Tipográfico Clean) -->
+                        <div class="reveal-up pt-6 border-t border-[#264D44]/30 mt-6 max-w-lg">
+                            <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-[#7A9490] mb-4">Assinado por Felipe Asensi. Formação & Reconhecimento:</p>
+                            <div class="flex flex-wrap items-center gap-x-8 gap-y-4 opacity-70 grayscale contrast-125 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+                                <span class="font-heading font-black text-lg tracking-tighter text-[#EDE8DC]">OAB</span>
+                                <span class="font-heading font-bold text-xl tracking-tight text-[#EDE8DC] italic">ConJur</span>
+                                <span class="font-serif font-black text-lg tracking-normal text-[#EDE8DC]">Migalhas</span>
+                                <span class="font-heading font-semibold text-lg tracking-wide text-[#EDE8DC]">Estadão</span>
+                            </div>
+                        </div>
+                    </div><!-- /coluna esquerda -->
+
+                    <!-- ── COLUNA DIREITA: LOGO ANIMADA (CINEMATIC PREMIUM) ── -->
+                    <div class="hidden lg:flex flex-col items-center justify-center">
+                        <div class="cinematic-wrapper">
+                            
+                            <!-- Deep Ambient Glow -->
+                            <div class="cinematic-core"></div>
+
+                            <!-- 3D Inclined Orbital Ring -->
+                            <div class="cinematic-orbit"></div>
+
+                            <!-- Floating Deep Space Particles -->
+                            <div class="cinematic-particle" style="width:3px;height:3px;left:25%;bottom:35%;--tx:-25px;--ty:-60px;--tz:20px;animation-duration:5s;animation-delay:0s;"></div>
+                            <div class="cinematic-particle" style="width:4px;height:4px;left:65%;bottom:15%;--tx:35px;--ty:-80px;--tz:-30px;animation-duration:6s;animation-delay:1.5s;"></div>
+                            <div class="cinematic-particle" style="width:2px;height:2px;left:45%;bottom:20%;--tx:10px;--ty:-40px;--tz:0px;animation-duration:4s;animation-delay:2.8s;"></div>
+                            <div class="cinematic-particle" style="width:3px;height:3px;left:75%;top:35%;--tx:20px;--ty:-40px;--tz:40px;animation-duration:5.5s;animation-delay:0.8s;"></div>
+                            <div class="cinematic-particle" style="width:2px;height:2px;left:30%;top:25%;--tx:-15px;--ty:-30px;--tz:-15px;animation-duration:4.5s;animation-delay:3.2s;"></div>
+
+                            <!-- Cinematic Light Flare (Anamorphic) -->
+                            <div class="cinematic-flare"></div>
+
+                            <!-- Static Logo Layer driven by CSS physics -->
+                            <div class="cinematic-logo-wrap w-52 xl:w-64">
+                                <img src="./favicon2_skills.png"
+                                     alt="Claude Skills Genius Premium"
+                                     class="w-full h-auto object-contain select-none"
+                                     draggable="false">
+                            </div>
+
+                        </div>
+                    </div><!-- /coluna direita -->
+
+                </div><!-- /grid -->
+            </div><!-- /container -->
+
+            <!-- ── MARQUEE DIVIDER ── -->
+            <div class="relative w-full overflow-hidden bg-[#080F0C] border-y border-[#264D44]/50 py-6 flex flex-col gap-5 z-20">
+                <!-- Linha 1 -->
+                <div class="flex w-[200%] animate-marquee pointer-events-none">
+                    <div class="flex-1 flex justify-around items-center px-4">
+                        <span class="text-[#D4A346]/70 font-heading font-black uppercase tracking-widest text-sm">Skills Jurídicas</span>
+                        <span class="text-[#3B6B60] font-heading font-bold uppercase tracking-widest text-sm">Download Nativo</span>
+                        <span class="text-[#D4A346]/70 font-heading font-black uppercase tracking-widest text-sm">Claude AI</span>
+                        <span class="text-[#3B6B60] font-heading font-bold uppercase tracking-widest text-sm">Felipe Asensi</span>
+                        <span class="text-[#D4A346]/70 font-heading font-black uppercase tracking-widest text-sm">Automação Jurídica</span>
+                        <span class="text-[#3B6B60] font-heading font-bold uppercase tracking-widest text-sm">Editor Nativo</span>
+                    </div>
+                    <div class="flex-1 flex justify-around items-center px-4">
+                        <span class="text-[#D4A346]/70 font-heading font-black uppercase tracking-widest text-sm">Skills Jurídicas</span>
+                        <span class="text-[#3B6B60] font-heading font-bold uppercase tracking-widest text-sm">Download Nativo</span>
+                        <span class="text-[#D4A346]/70 font-heading font-black uppercase tracking-widest text-sm">Claude AI</span>
+                        <span class="text-[#3B6B60] font-heading font-bold uppercase tracking-widest text-sm">Felipe Asensi</span>
+                        <span class="text-[#D4A346]/70 font-heading font-black uppercase tracking-widest text-sm">Automação Jurídica</span>
+                        <span class="text-[#3B6B60] font-heading font-bold uppercase tracking-widest text-sm">Editor Nativo</span>
+                    </div>
+                </div>
+                <!-- Linha 2 -->
+                <div class="flex w-[200%] animate-marquee-reverse pointer-events-none">
+                    <div class="flex-1 flex justify-around items-center px-4">
+                        <span class="text-[#264D44] font-heading font-black uppercase tracking-widest text-sm">Advogados Brasileiros</span>
+                        <span class="text-[#F2D57E]/40 font-heading font-bold uppercase tracking-widest text-sm">Escritório do Futuro</span>
+                        <span class="text-[#264D44] font-heading font-black uppercase tracking-widest text-sm">LGPD Seguro</span>
+                        <span class="text-[#F2D57E]/40 font-heading font-bold uppercase tracking-widest text-sm">High Ticket</span>
+                        <span class="text-[#264D44] font-heading font-black uppercase tracking-widest text-sm">Peças Jurídicas</span>
+                        <span class="text-[#F2D57E]/40 font-heading font-bold uppercase tracking-widest text-sm">Produtividade 10×</span>
+                    </div>
+                    <div class="flex-1 flex justify-around items-center px-4">
+                        <span class="text-[#264D44] font-heading font-black uppercase tracking-widest text-sm">Advogados Brasileiros</span>
+                        <span class="text-[#F2D57E]/40 font-heading font-bold uppercase tracking-widest text-sm">Escritório do Futuro</span>
+                        <span class="text-[#264D44] font-heading font-black uppercase tracking-widest text-sm">LGPD Seguro</span>
+                        <span class="text-[#F2D57E]/40 font-heading font-bold uppercase tracking-widest text-sm">High Ticket</span>
+                        <span class="text-[#264D44] font-heading font-black uppercase tracking-widest text-sm">Peças Jurídicas</span>
+                        <span class="text-[#F2D57E]/40 font-heading font-bold uppercase tracking-widest text-sm">Produtividade 10×</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <!-- /DOBRA 1 -->
+
+        <!-- ============================================================
+             DOBRA 2 — APP MOCK (3D STACKED CARDS)
+        ============================================================ -->
+        <section id="dobra2" class="relative py-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
+
+                <!-- Texto introdutório Dobra 2 -->
+                <div class="flex-1 space-y-6 reveal-up">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-[#D4A346]/25 w-max">
+                        <span class="w-2 h-2 rounded-full bg-[#D4A346] shadow-[0_0_10px_rgba(212,163,70,0.8)]"></span>
+                        <span class="text-xs font-heading font-black text-[#D4A346] uppercase tracking-[0.15em]">O App</span>
+                    </div>
+                    <h2 class="font-heading text-4xl md:text-5xl font-black text-[#EDE8DC] leading-tight">
+                        Tudo que você precisa<br>
+                        <span class="text-gradient">em um único lugar.</span>
+                    </h2>
+                    <p class="font-body text-[#A8B8B2] text-lg leading-relaxed max-w-lg">
+                        Copie, edite e baixe Skills jurídicas prontas para usar no Claude — direto do seu navegador, sem instalação.
+                    </p>
+                    <a href="#oferta" class="inline-flex items-center gap-2 bg-[#D4A346] text-[#080F0C] font-heading font-bold px-6 py-3 rounded-xl hover:bg-[#F2D57E] transition-all">
+                        Quero Acessar <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Stack de Cards 3D -->
+                <div class="relative flex justify-center lg:justify-end items-center h-[560px] w-full lg:w-[520px] tilt-wrapper reveal-up">
+
+                    <!-- Glow atrás do stack -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-[#9D7326]/20 to-[#264D44]/15 rounded-3xl blur-3xl -z-10"></div>
+
+                    <!-- Card Fundo — Trilha Conhecimento -->
+                    <div class="absolute lg:right-[22%] lg:left-auto left-0 right-0 mx-auto top-[10%] scale-75 opacity-40 glass-panel rounded-[2rem] p-6 w-[270px] max-w-full h-[380px] flex flex-col justify-center items-center shadow-lg border border-[#264D44]/40 transition-all duration-700">
+                        <div class="w-14 h-14 bg-[#1E3830] rounded-2xl flex items-center justify-center mb-5">
+                            <i data-lucide="book-open" class="w-7 h-7 text-[#3B6B60]"></i>
+                        </div>
+                        <h4 class="font-heading text-base font-bold text-[#7A9490] text-center">Trilha de Conhecimento</h4>
+                        <p class="text-xs text-[#3B6B60] text-center mt-2 px-4">7 módulos jurídicos completos</p>
+                        <div class="w-1/2 h-1 bg-[#264D44] mt-4 rounded-full"></div>
+                    </div>
+
+                    <!-- Card Meio — Skills Library -->
+                    <div class="absolute lg:right-[10%] lg:left-auto left-0 right-0 mx-auto top-[5%] scale-[0.87] opacity-80 glass-panel rounded-[2rem] p-6 w-[290px] max-w-full h-[420px] bg-[#15302A] border border-[#D4A346]/20 flex flex-col justify-center items-center shadow-2xl z-10 transition-all duration-700">
+                        <div class="w-20 h-20 bg-[#080F0C]/60 rounded-2xl flex items-center justify-center mb-5 shadow-inner">
+                            <i data-lucide="library" class="w-10 h-10 text-[#D4A346]"></i>
+                        </div>
+                        <h4 class="font-heading text-2xl font-bold text-[#F2D57E] text-center">Biblioteca de Skills</h4>
+                        <p class="text-xs text-[#D4A346]/70 font-mono mt-2">Skills prontas p/ advocacia</p>
+                        <div class="w-2/3 h-1 bg-[#080F0C] mt-5 rounded-full"></div>
+                    </div>
+
+                    <!-- Card Frente — destaque -->
+                    <div class="absolute lg:right-0 lg:left-auto left-0 right-0 mx-auto top-0 animated-glow-border rounded-[2rem] p-7 w-[310px] max-w-full h-[480px] bg-[#0D1A16] text-[#EDE8DC] flex flex-col items-center shadow-[0_25px_60px_rgba(0,0,0,0.6)] border border-[#D4A346]/25 z-20 tilt-card">
+                        <div class="tilt-card-content text-center flex flex-col h-full w-full">
+                            <div class="flex justify-between w-full mb-6">
+                                <span class="bg-white/5 px-3 py-1 text-[#7A9490] rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10">App Web</span>
+                                <span class="bg-[#D4A346] text-[#080F0C] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">LANÇAMENTO</span>
+                            </div>
+                            <div class="w-24 h-24 mx-auto flex items-center justify-center mb-5 relative">
+                                <div class="absolute inset-0 rounded-[1.5rem] bg-gradient-to-tr from-[#9D7326] to-[#F2D57E] opacity-20 blur-xl"></div>
+                                <img src="./favicon2_skills.png" alt="Skills Genius" class="w-20 h-20 object-contain drop-shadow-[0_0_16px_rgba(212,163,70,0.6)] relative z-10">
+                            </div>
+                            <h3 class="font-heading text-2xl font-black mb-1 text-[#EDE8DC]">Claude Skills</h3>
+                            <h3 class="font-heading text-2xl font-black mb-3" style="background:var(--gradient-brand-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Genius</h3>
+                            <p class="text-xs text-[#7A9490] mb-6 px-2 leading-relaxed">Copie, edite e baixe Skills jurídicas <br>prontas para usar no Claude.</p>
+                            <div class="space-y-2 text-left mb-6 w-full">
+                                <div class="flex items-center gap-2 text-xs text-[#A8B8B2]">
+                                    <span class="w-4 h-4 bg-[#D4A346]/20 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-2.5 h-2.5 text-[#D4A346]"></i></span>
+                                    Aprenda a criar Skills jurídicas
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-[#A8B8B2]">
+                                    <span class="w-4 h-4 bg-[#D4A346]/20 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-2.5 h-2.5 text-[#D4A346]"></i></span>
+                                    Edite nativamente no app
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-[#A8B8B2]">
+                                    <span class="w-4 h-4 bg-[#D4A346]/20 rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="check" class="w-2.5 h-2.5 text-[#D4A346]"></i></span>
+                                    Baixe em .md pronto para o Claude
+                                </div>
+                            </div>
+                            <div class="w-full mt-auto">
+                                <div class="flex justify-between text-[10px] mb-1.5 text-[#7A9490] font-bold">
+                                    <span>Produtividade</span><span>10×</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-[#0D1A16] border border-[#264D44] rounded-full overflow-hidden mb-5">
+                                    <div class="h-full w-full rounded-full" style="background:var(--gradient-brand-gold);box-shadow:0 0 12px rgba(212,163,70,0.6);"></div>
+                                </div>
+                                <a href="#oferta" class="w-full bg-[#D4A346]/10 hover:bg-[#D4A346] border border-[#D4A346]/30 hover:border-[#D4A346] text-[#D4A346] hover:text-[#080F0C] font-heading font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-sm">
+                                    Quero Acessar <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /stack cards -->
+            </div>
+        </section>
+        <!-- /DOBRA 2 -->
+
+        <div id="oferta"></div>
+
+    </main>
+
+    <!-- ============================================================
+         SCRIPTS
+    ============================================================ -->
+    <script>
+        /* Init Lucide */
+        lucide.createIcons();
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* 1. Custom Cursor */
+        const cursor    = document.querySelector('.custom-cursor');
+        const cursorDot = document.querySelector('.custom-cursor-dot');
+        if (window.matchMedia('(pointer: fine)').matches) {
+            window.addEventListener('mousemove', e => {
+                gsap.to(cursor,    { x: e.clientX, y: e.clientY, duration: .15, ease: 'power2.out' });
+                gsap.set(cursorDot,{ x: e.clientX, y: e.clientY });
+            });
+            document.querySelectorAll('a, button, .tilt-card, input').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover');
+                    gsap.to(cursor, { scale: 1.5, duration: .2 });
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                    gsap.to(cursor, { scale: 1, duration: .2 });
+                });
+            });
+        }
+
+        /* 2. Tilt 3D */
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r    = card.getBoundingClientRect();
+                const rotX = ((e.clientY - r.top  - r.height/2) / (r.height/2)) * -10;
+                const rotY = ((e.clientX - r.left - r.width/2)  / (r.width/2))  *  10;
+                gsap.to(card, { rotationX: rotX, rotationY: rotY, transformPerspective: 1200, ease: 'power1.out', duration: .4 });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotationX: 0, rotationY: 0, ease: 'power3.out', duration: .6 });
+            });
+        });
+
+        /* 3. Reveal Animations */
+        gsap.to('.reveal-text', { y: '0%', duration: 1.2, stagger: .12, ease: 'power4.out', delay: .1 });
+        gsap.to('.reveal-scale', { opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)', delay: .05 });
+        document.querySelectorAll('.reveal-up').forEach(el => {
+            gsap.to(el, {
+                scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none reverse' },
+                opacity: 1, y: 0, duration: 1, ease: 'power3.out'
+            });
+        });
+
+        /* 4. Parallax Blobs */
+        gsap.to('#parallax-blob-1', { scrollTrigger: { trigger: 'body', scrub: 1.5 }, y: 400, x: -200, ease: 'none' });
+        gsap.to('#parallax-blob-2', { scrollTrigger: { trigger: 'body', scrub: 2   }, y: -500, x: 300,  ease: 'none' });
+        gsap.to('#parallax-blob-3', { scrollTrigger: { trigger: 'body', scrub: 1   }, y: 300, scale: 1.5, ease: 'none' });
+
+        /* 5. Matrix Canvas (mesmo do index.html) */
+        (function() {
+            const canvas = document.getElementById('matrix-canvas');
+            if (!canvas) return;
+            const ctx      = canvas.getContext('2d');
+            const chars    = '01アイウエオカキクケコ';
+            let   columns, drops;
+            function resize() {
+                canvas.width  = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                columns = Math.floor(canvas.width / 16);
+                drops   = Array(columns).fill(0);
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            setInterval(() => {
+                ctx.fillStyle = 'rgba(8,15,12,0.06)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(212,163,70,0.12)';
+                ctx.font      = '12px monospace';
+                drops.forEach((y, i) => {
+                    const ch = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(ch, i * 16, y * 16);
+                    drops[i] = (y * 16 > canvas.height && Math.random() > 0.975) ? 0 : y + 1;
+                });
+            }, 60);
+        })();
+
+        /* 6. Header scroll shrink */
+        window.addEventListener('scroll', () => {
+            const h = document.getElementById('main-header');
+            h.classList.toggle('py-2', window.scrollY > 60);
+        });
+
+        /* 7. (reservado para futuras expansões) */
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Dashboard - Pre-Landing & Media Kit</title>
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #030712;
+      color: #f3f4f6;
+    }
+    .font-jakarta {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .brand-glow {
+      box-shadow: 0 0 40px rgba(232, 189, 86, 0.15);
+    }
+    .badge-gold {
+      background: rgba(232, 189, 86, 0.1);
+      border: 1px solid rgba(232, 189, 86, 0.2);
+      color: #E8BD56;
+    }
+  </style>
+</head>
+<body class="selection:bg-yellow-500/30 selection:text-white">
+
+  <!-- Header Banner -->
+  <header class="relative overflow-hidden py-16 border-b border-white/5 bg-gradient-to-b from-[#0F172A]/80 to-[#030712]">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-500/10 via-transparent to-transparent"></div>
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+      <div class="flex items-center gap-1.5 mb-4">
+        <span class="px-3 py-1 rounded-full badge-gold text-xs font-mono font-bold tracking-widest uppercase">
+          KIT DO DESIGNER & EMBED DE SUCESSO
+        </span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-jakarta font-extrabold tracking-tight text-white mb-4">
+        Guia de Criação da Landing Page & Media Kit
+      </h1>
+      <p class="text-lg text-slate-400 max-w-3xl leading-relaxed">
+        Este documento contém as diretrizes do <strong>Design System</strong>, os snippets de <strong>Embedding (.html)</strong> para pickaxe.co, imagens recomendadas, chamadas comerciais de alta conversão (Copywriting) e diretrizes harmônicas para que a futura landing page reflita com luxo o visual premium do aplicativo.
+      </p>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-12 space-y-16">
+
+    <!-- Section: Identity and Design System -->
+    <section class="space-y-6">
+      <div class="flex items-baseline gap-3 border-b border-white/10 pb-3">
+        <span class="text-3xl font-mono text-[#E8BD56] font-bold">01</span>
+        <h2 class="text-2xl font-jakarta font-bold text-white">Design System & Atmosfera Visual</h2>
+      </div>
+      
+      <p class="text-slate-300 text-sm leading-relaxed max-w-4xl">
+        Para manter o alinhamento visual, a futura landing page deve adotar uma estética baseada em elegância, seriedade científica e alto impacto tecnológico (Fintech Premium para a Academia). Evite padrões genéricos.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Palette -->
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <h3 class="font-jakarta font-bold text-lg text-white">Paleta de Cores</h3>
+          <div class="space-y-3 font-mono text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg bg-[#40585E]"></span>
+              <div>
+                <p class="text-white font-bold">Deep Slate Green (#40585E)</p>
+                <p class="text-slate-400">Headers, Primários, Status</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg bg-[#B4861F]"></span>
+              <div>
+                <p class="text-white font-bold">Classic Academy Gold (#B4861F)</p>
+                <p class="text-slate-400">Destaques, Bordas, Selos</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg bg-[#E8BD56]"></span>
+              <div>
+                <p class="text-white font-bold">Vibrant Gold (#E8BD56)</p>
+                <p class="text-slate-400">Controles Dark Mode, Ênfases</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-lg bg-[#F5F4EE]"></span>
+              <div>
+                <p class="text-white font-bold">Sophisticated Ivory (#F5F4EE)</p>
+                <p class="text-slate-400">Fundo principal (Light Theme)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <h3 class="font-jakarta font-bold text-lg text-white">Tipografia do App</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            O aplicativo adota três famílias tipográficas específicas no Google Fonts que guiam ritmos e intensidades:
+          </p>
+          <div class="space-y-2 font-mono text-xs">
+            <p class="text-white font-semibold">1. Inter (Textos Gerais & UI)</p>
+            <p class="text-white font-semibold">2. Plus Jakarta Sans (Headers & Títulos)</p>
+            <p class="text-white font-semibold flex items-center gap-1">
+              3. JetBrains Mono <span class="text-[#E8BD56]">(Métricas e Bibliografia)</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Layout Specs -->
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <h3 class="font-jakarta font-bold text-lg text-white">Efeitos Espaciais</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Utilize cantos arredondados de alta curvatura (ex: <code>rounded-3xl</code>, 24px) e painéis translúcidos em camadas de desfoque de fundo (Backdrop Blur: 12px a 20px). As bordas devem possuir contraste sutil com opacidade em 5% a 10% (estilo Glassmorphism).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Features Architecture for Landing Page -->
+    <section class="space-y-6">
+      <div class="flex items-baseline gap-3 border-b border-white/10 pb-3">
+        <span class="text-3xl font-mono text-[#E8BD56] font-bold">02</span>
+        <h2 class="text-2xl font-jakarta font-bold text-white">Eixos e Módulos do App (Especialmente para Vendas)</h2>
+      </div>
+
+      <p class="text-slate-300 text-sm leading-relaxed">
+        Cada seção da sua futura Landing Page deve explorar de forma apaixonante e objetiva as seguintes superpotências que redefinem o fluxo de trabalho de qualquer pesquisador:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Feature 1 -->
+        <div class="p-5 rounded-2xl border border-white/5 bg-[#1F2937]/30 hover:border-yellow-500/20 transition-all flex gap-4">
+          <div class="text-[#E8BD56] text-xl font-bold font-mono">01</div>
+          <div class="space-y-1">
+            <h4 class="text-white font-bold font-jakarta">Plot 3D Bibliométrico</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Dispersão cartesiana interativa tridimensional por relevância e co-citação. Mostre que os dados deixaram de ser listas estáticas e ganharam vida no espaço em uma visualização futurista e giratória.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="p-5 rounded-2xl border border-white/5 bg-[#1F2937]/30 hover:border-yellow-500/20 transition-all flex gap-4">
+          <div class="text-[#E8BD56] text-xl font-bold font-mono">02</div>
+          <div class="space-y-1">
+            <h4 class="text-white font-bold font-jakarta">Grafos Dinâmicos D3 (Força-Dirigida)</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Mapeamento visual de similaridade científica e redes de co-autoria em tempo de execução. Mostre conexões cruzadas de prior works (obras seminais) e derivative works em tempo real, sem travar o browser.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="p-5 rounded-2xl border border-white/5 bg-[#1F2937]/30 hover:border-yellow-500/20 transition-all flex gap-4">
+          <div class="text-[#E8BD56] text-xl font-bold font-mono">03</div>
+          <div class="space-y-1">
+            <h4 class="text-white font-bold font-jakarta">Sínteses e Revisões Estruturadas (RSL e RIL)</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Revisões Sistemáticas de Literatura ou Integrativas produzidas instantaneamente e exportáveis para Word (.DOCX) respeitando formatação acadêmica oficial estrita. Evita semanas de formatação manual de quadros sinópticos.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="p-5 rounded-2xl border border-white/5 bg-[#1F2937]/30 hover:border-yellow-500/20 transition-all flex gap-4">
+          <div class="text-[#E8BD56] text-xl font-bold font-mono">04</div>
+          <div class="space-y-1">
+            <h4 class="text-white font-bold font-jakarta">Dual Citation e Fichamento IA com Sonar</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Gera automaticamente referências formatadas em ABNT NBR 6023 (Versão Atual) e APA 7ª. O Fichamento IA (utilizando Perplexity Sonar-Deep-Research sob demanda) examina conteúdos reais com zero alucinação.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: COPYWRITING COLD HOOKS -->
+    <section class="space-y-6">
+      <div class="flex items-baseline gap-3 border-b border-white/10 pb-3">
+        <span class="text-3xl font-mono text-[#E8BD56] font-bold">03</span>
+        <h2 class="text-2xl font-jakarta font-bold text-white">Copys de Venda (Textos & Abordagem Racional)</h2>
+      </div>
+
+      <div class="space-y-4">
+        <div class="glass-card rounded-2xl p-6">
+          <p class="text-[#E8BD56] text-xs font-mono font-bold uppercase tracking-wider mb-2">HEADLINE PRINCIPAL SUGERIDA</p>
+          <blockquote class="text-lg font-jakarta font-extrabold text-white leading-relaxed">
+            "Acelere sua dissertação, tese ou artigo com a única plataforma bibliométrica do Brasil que conecta IA, grafos dinâmicos e formatação ABNT / APA com 100% de precisão científica."
+          </blockquote>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-5 rounded-2xl border border-white/5 bg-[#1F2937]/20">
+            <h4 class="text-white font-bold text-sm uppercase font-mono tracking-wider mb-2 text-yellow-500">Dor do Acadêmico</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Formatar referências, examinar centenas de resumos manualmente no início do projeto e perder prazos por não encontrar o "fio condutor" e as convergências reais da literatura contemporânea.
+            </p>
+          </div>
+          <div class="p-5 rounded-2xl border border-white/5 bg-[#1F2937]/20">
+            <h4 class="text-white font-bold text-sm uppercase font-mono tracking-wider mb-2 text-[#40585E]">Ganho com o App</h4>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              Sair com um panorama visual do estado da arte do tema em menos de 1 minuto, com fichamentos densos, revisões sistemáticas estruturadas e todas as referências prontas em Word para copiar e colar na tese.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: COPIER EMBED SNIPPETS FOR PICKAXE -->
+    <section class="space-y-6">
+      <div class="flex items-baseline gap-3 border-b border-white/10 pb-3">
+        <span class="text-3xl font-mono text-[#E8BD56] font-bold">04</span>
+        <h2 class="text-2xl font-jakarta font-bold text-white">Código de Embed de Alta Performance para Iframe / Pickaxe</h2>
+      </div>
+
+      <p class="text-slate-300 text-sm leading-relaxed">
+        Para embutir o Academic Dashboard de forma impecável na sua plataforma Member App, de forma totalmente compatível com o Pickaxe Studio, use os seguintes snippets otimizados já configurados com suporte CORS, cabeçalho de iframe (<code>ALLOWALL</code>) e as dimensões responsivas corretas:
+      </p>
+
+      <div class="space-y-6">
+        <!-- Snippet 1 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-white text-xs font-mono font-bold bg-[#40585E]/50 px-2.5 py-1 rounded">
+              Opção A: Iframe Classic (Perfeito para Pickaxe Pages)
+            </span>
+            <span class="text-slate-500 text-xs">Acessos rápidos & downloads habilitados</span>
+          </div>
+          <pre class="bg-[#030712] border border-white/10 rounded-xl p-4 text-xs font-mono text-slate-300 overflow-x-auto select-all">
+&lt;div style="width:100%; display:flex; justify-content:center; margin:20px 0;"&gt;
+  &lt;iframe 
+    src="https://academic-bibliometric-dashboard-607912449171.us-west1.run.app"
+    width="100%"
+    height="850"
+    style="border:none; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.15); max-width:1200px; display:block;"
+    title="Academic Bibliometric Dashboard"
+    allow="clipboard-write; clipboard-read"
+  &gt;
+    O seu navegador não suporta a visualização por frames.
+  &lt;/iframe&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <!-- Snippet 2 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-white text-xs font-mono font-bold bg-yellow-500/20 text-[#E8BD56] px-2.5 py-1 rounded">
+              Opção B: Proporcional & Altamente Responsiva (Mobile-First)
+            </span>
+            <span class="text-slate-500 text-xs">Garante proporção entre celular e computador</span>
+          </div>
+          <pre class="bg-[#030712] border border-white/10 rounded-xl p-4 text-xs font-mono text-slate-300 overflow-x-auto select-all">
+&lt;style&gt;
+  .academic-iframe-wrapper {
+    width: 100%;
+    max-width: 1250px;
+    margin: 30px auto;
+    padding: 0 10px;
+  }
+  .academic-iframe-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    background: #f5f5f5;
+  }
+  @media (min-width: 1024px) {
+    .academic-iframe-container { padding-bottom: 56.25%; /* 16:9 */ }
+  }
+  @media (max-width: 1023px) and (min-width: 768px) {
+    .academic-iframe-container { padding-bottom: 75%; /* 4:3 */ }
+  }
+  @media (max-width: 767px) {
+    .academic-iframe-container { padding-bottom: 155%; /* Stacked view vertical */ }
+  }
+  .academic-iframe-container iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+  }
+&lt;/style&gt;
+
+&lt;div class="academic-iframe-wrapper"&gt;
+  &lt;div class="academic-iframe-container"&gt;
+    &lt;iframe 
+      src="https://academic-bibliometric-dashboard-607912449171.us-west1.run.app"
+      title="Academic Dashboard"
+      allow="clipboard-write; clipboard-read"
+    &gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-8 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500">
+      <p>Desenvolvido para Felipe Asensi • Academic Dashboard Media Kit</p>
+      <p class="font-mono">Última atualização: 2026-05-28 14:28 UTC</p>
+    </footer>
+
+  </main>
+
+</body>
+</html>

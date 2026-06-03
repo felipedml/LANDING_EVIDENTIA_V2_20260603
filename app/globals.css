@@ -1,0 +1,449 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Design System - Global Custom Tokens */
+:root {
+  --color-brand-dark:    #1E2E38;   /* Primário mais escuro e definido para o modo light */
+  --color-brand-orange:  #B4861F;   /* Um tom de ouro/âmbar com muito mais contraste para o modo light */
+  --color-brand-accent:  #5F613F;   /* Um verde oliva mais escuro de maior legibilidade */
+  --color-brand-light:   #F5F4EE;   /* Fundo areia/cinza claro que fornece excelente contraste com textos escuros */
+  --color-text-body:     #0D1527;   /* Slate-950 — contraste super nítido no modo light */
+  --color-text-muted:    #3E4E59;   /* Slate-700 — muito mais visível que cinzas murchos */
+  --color-border:        rgba(15,23,42,0.18); /* borda sutil mas divisível */
+  --color-surface:       rgba(255,255,255,0.85); /* mais opaco para aumentar contraste da letra com o fundo panel */
+  --color-shadow:        rgba(15,23,42,0.08);
+  --color-shadow-accent: rgba(180,134,31,0.15);
+}
+
+.dark {
+  --color-brand-dark:    #E2E8F0;   /* Slate-205 — extremamente legível em fundos escuros */
+  --color-brand-orange:  #F5C25F;   /* Um amarelo/dourado super radiante com excelente contraste em escuro */
+  --color-brand-accent:  #A4A679;   /* Um verde-oliva pastel mais legível */
+  --color-brand-light:   #030712;   /* Fundo super escuro para profundidade e contraste imbatível */
+  --color-text-body:     #F9FAFB;   /* Quase branco puro */
+  --color-text-muted:    #CBD5E1;   /* Slate-300 — legibilidade ideal para textos secundários */
+  --color-border:        rgba(255,255,255,0.1);
+  --color-surface:       rgba(17,24,39,0.92); /* Painéis de vidro muito mais opacos no modo escuro para contraste absoluto */
+  --color-shadow:        rgba(0,0,0,0.5);
+  --color-shadow-accent: rgba(245,194,95,0.15);
+}
+
+body {
+  background-color: var(--color-brand-light);
+  color: var(--color-text-body);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Custom Styles For Seamless Loading and Premium Interactivity */
+.font-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.text-gradient {
+  background: linear-gradient(to right,
+    var(--color-brand-dark) 0%,
+    var(--color-brand-accent) 45%,
+    var(--color-brand-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-panel {
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 32px var(--color-shadow);
+  transition: all 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(216,166,60,0.3);
+  box-shadow: 0 12px 36px var(--color-shadow-accent);
+}
+
+.animated-glow-border {
+  position: relative;
+  z-index: 1;
+}
+
+.animated-glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(45deg,
+    var(--color-brand-dark),
+    var(--color-brand-accent),
+    var(--color-brand-orange),
+    var(--color-brand-dark));
+  background-size: 200% 200%;
+  animation: glow-border 4s ease infinite;
+  z-index: -1;
+  opacity: 0.55;
+}
+
+@keyframes glow-border {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Ambient Canvas Background Blobs */
+.ambient-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  filter: blur(95px);
+  border-radius: 50%;
+  opacity: 0.35;
+}
+
+.blob-1 {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: var(--color-brand-accent);
+  animation: float-blob-1 25s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+  bottom: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: var(--color-brand-orange);
+  animation: float-blob-2 30s ease-in-out infinite alternate-reverse;
+}
+
+.blob-3 {
+  top: 35%;
+  left: 45%;
+  width: 40vw;
+  height: 40vw;
+  background: var(--color-brand-dark);
+  opacity: 0.15;
+  animation: float-blob-1 28s ease-in-out infinite alternate;
+}
+
+@keyframes float-blob-1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(6%, 8%) scale(1.15); }
+}
+
+@keyframes float-blob-2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-8%, -5%) scale(1.08); }
+}
+
+@keyframes float-logo {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) rotate(2.5deg) scale(1.02);
+  }
+}
+
+.animate-float-logo {
+  animation: float-logo 5s ease-in-out infinite;
+}
+
+/* Hide Webkit Scrollbars for Premium Aesthetics */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Word Cloud Custom Layout style */
+.word-cloud-text {
+  transition: transform 0.2s ease, fill 0.2s ease;
+  cursor: pointer;
+}
+.word-cloud-text:hover {
+  transform: scale(1.1);
+}
+
+/* Smooth Table Transition */
+.dt-container {
+  font-family: inherit !important;
+}
+table.dataTable {
+  border-collapse: collapse !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+table.dataTable thead th {
+  border-bottom: 2px solid var(--color-brand-orange) !important;
+  background-color: rgba(64, 88, 94, 0.05) !important;
+  color: var(--color-brand-dark) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+}
+.dark table.dataTable thead th {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  color: var(--color-brand-dark) !important;
+}
+table.dataTable tbody tr {
+  background-color: transparent !important;
+  color: var(--color-text-body) !important;
+}
+table.dataTable tbody td {
+  border-bottom: 1px solid var(--color-border) !important;
+}
+.dataTables_wrapper .dataTables_filter input {
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  background-color: var(--color-surface) !important;
+  color: var(--color-text-body) !important;
+}
+
+/* Immersive UI - Buttons, Badges, Tables */
+.btn-primary {
+  background: #40585E;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-primary:hover {
+  background: var(--color-brand-orange);
+  transform: translateY(-1px);
+}
+.btn-accent {
+  background: rgba(216,166,60,0.1);
+  color: var(--color-brand-orange);
+  padding: 12px 24px;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-accent:hover {
+  background: rgba(216,166,60,0.2);
+  transform: translateY(-1px);
+}
+.badge {
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.badge-oa {
+  background: rgba(34,197,94,0.1);
+  color: #22c55e;
+}
+.badge-paywall {
+  background: rgba(239,68,68,0.1);
+  color: #ef4444;
+}
+
+/* Custom styles for tables from Theme spec */
+th {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-brand-orange);
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+td {
+  padding: 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* LANDING PAGE CUSTOM SPECIFIC CSS VARIABLES AND UTILITIES */
+:root {
+  --bg-primary: #030712;
+  --bg-secondary: #0F172A;
+  --text-primary: #f3f4f6;
+  --text-secondary: #94a3b8;
+  --gold-vibrant: #E8BD56;
+  --gold-classic: #B4861F;
+  --green-slate: #40585E;
+  --card-bg: rgba(17, 24, 39, 0.7);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --glow: rgba(232, 189, 86, 0.15);
+}
+
+/* Light Theme Variables */
+.light {
+  --bg-primary: #F5F4EE;
+  --bg-secondary: #FFFFFF;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --gold-vibrant: #B4861F;
+  --gold-classic: #8B6318;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(0, 0, 0, 0.06);
+  --glow: rgba(180, 134, 31, 0.12);
+}
+
+/* Smooth transition for theme colors */
+.bg-transition {
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.font-jakarta {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-mono-jet {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+}
+
+.badge-gold {
+  background: rgba(232, 189, 86, 0.1);
+  border: 1px solid rgba(232, 189, 86, 0.25);
+  color: var(--gold-vibrant);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-classic), var(--gold-vibrant));
+  color: #030712;
+  font-weight: 800;
+  transition: all 0.25s ease;
+}
+
+.btn-gold:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 40px rgba(232, 189, 86, 0.4);
+}
+
+/* Fade up on scroll */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Float parallax animate */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+
+.float-parallax {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse glow for buttons */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(232, 189, 86, 0.3); }
+  50%       { box-shadow: 0 0 50px rgba(232, 189, 86, 0.55); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+/* Badge pulse animation */
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.65; }
+}
+
+.badge-pulse {
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* Floating animation for landing page blobs */
+@keyframes float-blob-1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(6%, 8%) scale(1.15); }
+}
+
+@keyframes float-blob-2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-8%, -5%) scale(1.08); }
+}
+
+.landing-blob {
+  position: absolute;
+  filter: blur(95px);
+  border-radius: 50%;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.landing-blob-1 {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: var(--gold-vibrant);
+  animation: float-blob-1 25s ease-in-out infinite alternate;
+}
+
+.landing-blob-2 {
+  bottom: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: var(--green-slate);
+  animation: float-blob-2 30s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes pulse-logo {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(232, 189, 86, 0.3)); }
+  50%      { filter: drop-shadow(0 0 28px rgba(232, 189, 86, 0.6)); }
+}
+
+.animate-pulse-logo {
+  animation: pulse-logo 3s ease-in-out infinite;
+}
+
+/* Infinity Scrolling Marquee Ticker */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.3333%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+
+

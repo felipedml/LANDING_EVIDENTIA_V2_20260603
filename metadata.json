@@ -1,0 +1,8 @@
+{
+  "name": "Remix: EvidentIA LandingPage",
+  "description": "Dashboard acadêmico bibliográfico e bibliométrico premium em pt-BR com visualizações métricas de relevância e fichamento automático de IA. Faz revisões sistemática, integrativa e mapeamento de evidências científicas com suporte para exportação em formatos padronizados.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

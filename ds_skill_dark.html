@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System Showcase - Claude Skills Genius (Dark Mode)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS v4 CDN -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Custom CSS from src/index.css -->
+  <style type="text/tailwindcss">
+    @theme {
+      --color-brand-dark: #40585E;
+      --color-brand-blue: #40585E;
+      --color-brand-orange: #D8A63C;
+      --color-brand-accent: #848559;
+      --color-brand-light: #F9F8F6;
+
+      /* Dark Mode Variables */
+      --color-dark-bg: #0F172A;
+      --color-dark-surface: #1E293B;
+      --color-dark-border: #334155;
+      --color-dark-text: #F8FAFC;
+      --color-dark-text-muted: #CBD5E1;
+
+      --font-heading: "Plus Jakarta Sans", sans-serif;
+      --font-body: "Inter", sans-serif;
+    }
+
+    @layer base {
+      body {
+        @apply font-body antialiased bg-brand-light text-slate-800 transition-colors duration-500;
+      }
+      
+      .dark body {
+        @apply bg-dark-bg text-dark-text;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        @apply font-heading;
+      }
+    }
+
+    @layer components {
+      .glass-panel {
+        @apply bg-white/70 backdrop-blur-lg border border-white/50 shadow-[0_8px_32px_rgba(64,88,94,0.05)] transition-colors duration-500;
+      }
+      
+      .dark .glass-panel {
+        @apply bg-dark-surface/60 border-dark-border/50 shadow-[0_8px_32px_rgba(0,0,0,0.3)];
+      }
+      
+      .animated-glow-border {
+        position: relative;
+      }
+      .animated-glow-border::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        background: linear-gradient(45deg, var(--color-brand-dark), var(--color-brand-accent), var(--color-brand-orange), var(--color-brand-dark));
+        background-size: 200% 200%;
+        animation: glow-border 3s ease infinite;
+        z-index: -1;
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes glow-border {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .text-stroke-brand {
+      -webkit-text-stroke: 1px var(--color-brand-dark);
+      color: transparent;
+    }
+
+    .dark .text-stroke-brand {
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+      color: transparent;
+    }
+
+    .text-gradient {
+      background: linear-gradient(to right, var(--color-brand-dark) 0%, var(--color-brand-accent) 45%, var(--color-brand-orange) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .dark .text-gradient {
+      background: linear-gradient(to right, #A3B1B5 0%, var(--color-brand-accent) 45%, var(--color-brand-orange) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Ambient Canvas Blobs */
+    .ambient-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      filter: blur(80px);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .blob-1 {
+      top: -10%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: var(--color-brand-accent);
+      animation: float 20s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      bottom: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: var(--color-brand-orange);
+      animation: float 25s ease-in-out infinite alternate-reverse;
+    }
+
+    .blob-3 {
+      top: 40%;
+      left: 50%;
+      width: 40vw;
+      height: 40vw;
+      background: var(--color-brand-blue);
+      animation: float 22s ease-in-out infinite alternate;
+      opacity: 0.2;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5%, 5%) scale(1.1); }
+    }
+  </style>
+</head>
+<body class="bg-dark-bg text-dark-text relative min-h-screen">
+  
+  <canvas id="matrix-canvas" class="fixed inset-0 pointer-events-none mix-blend-plus-lighter opacity-80 transition-opacity duration-500" style="z-index: 0;"></canvas>
+
+  <div class="ambient-canvas">
+    <div class="blob blob-1" id="parallax-blob-1"></div>
+    <div class="blob blob-2" id="parallax-blob-2"></div>
+    <div class="blob blob-3" id="parallax-blob-3"></div>
+  </div>
+
+  <!-- Top Navigation -->
+  <nav class="glass-panel sticky top-0 z-50 border-b-0 rounded-b-3xl mx-4 mt-2 mb-8 parallax-subtle">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between overflow-x-auto hide-scrollbar">
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="w-8 h-8 rounded-lg bg-brand-orange/10 flex items-center justify-center border border-brand-orange/20 shadow-sm overflow-hidden p-1">
+          <i data-lucide="palette" class="text-brand-orange w-5 h-5"></i>
+        </div>
+        <span class="font-heading font-extrabold text-lg tracking-tight text-dark-text">
+          Design <span class="text-brand-orange">System</span>
+        </span>
+      </div>
+      <div class="flex items-center gap-6 text-sm font-heading font-semibold shrink-0 ml-8">
+        <a href="#hero" class="text-dark-text-muted hover:text-brand-orange transition-colors">Hero</a>
+        <a href="#typography" class="text-dark-text-muted hover:text-brand-orange transition-colors">Typography</a>
+        <a href="#colors" class="text-dark-text-muted hover:text-brand-orange transition-colors">Colors</a>
+        <a href="#components" class="text-dark-text-muted hover:text-brand-orange transition-colors">Components</a>
+        <a href="#layout" class="text-dark-text-muted hover:text-brand-orange transition-colors">Layout</a>
+        <a href="#motion" class="text-dark-text-muted hover:text-brand-orange transition-colors">Motion</a>
+        <a href="#icons" class="text-dark-text-muted hover:text-brand-orange transition-colors">Icons</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-6 pb-24 space-y-24 relative z-10">
+    
+    <!-- 1. Hero Section -->
+    <section id="hero" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">1. Hero Section</h2>
+        <p class="text-dark-text-muted font-body">The primary entry point, cloned exactly from the main app.</p>
+      </div>
+      
+      <div class="relative rounded-3xl overflow-hidden border border-dark-border shadow-xl bg-dark-surface/50 p-8 md:p-16 flex items-center justify-center min-h-[60vh] parallax-subtle">
+        <div class="animated-glow-border glass-panel p-8 rounded-2xl w-full max-w-md flex flex-col items-center text-center transition-all duration-300 relative z-10">
+          <div class="w-20 h-20 rounded-full bg-dark-surface flex items-center justify-center mb-6 drop-shadow-lg border border-dark-border overflow-hidden p-3">
+            <i data-lucide="book-open" class="text-brand-orange w-10 h-10"></i>
+          </div>
+          
+          <h1 class="text-2xl font-heading font-bold text-dark-text mb-2">
+            Design System Showcase
+          </h1>
+          <p class="text-dark-text-muted mb-8 font-body">
+            A living documentation of the UI patterns.
+          </p>
+
+          <div class="w-full text-left flex flex-col">
+            <button class="w-full py-3 px-4 bg-brand-orange hover:bg-brand-orange/90 text-dark-bg font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+              <span>Explore Patterns</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Typography -->
+    <section id="typography" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">2. Typography</h2>
+        <p class="text-dark-text-muted font-body">Font families, weights, and text styles used across the app.</p>
+      </div>
+      
+      <div class="glass-panel rounded-[2rem] p-8 md:p-10 space-y-12 parallax-subtle">
+        <div>
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Headings (Plus Jakarta Sans)</h3>
+          <div class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-5xl</span>
+              <h1 class="text-5xl font-heading font-extrabold text-dark-text tracking-tight">Heading 1</h1>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-4xl</span>
+              <h2 class="text-4xl font-heading font-extrabold text-dark-text tracking-tight">Heading 2</h2>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-3xl</span>
+              <h3 class="text-3xl font-heading font-bold text-dark-text">Heading 3</h3>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-2xl</span>
+              <h4 class="text-2xl font-heading font-bold text-dark-text">Heading 4</h4>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-xl</span>
+              <h5 class="text-xl font-heading font-bold text-dark-text">Heading 5</h5>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Body (Inter)</h3>
+          <div class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-lg</span>
+              <p class="text-lg font-body text-dark-text-muted leading-relaxed max-w-2xl">Large body text used for introductions and important paragraphs. The quick brown fox jumps over the lazy dog.</p>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-base</span>
+              <p class="text-base font-body text-dark-text-muted leading-relaxed max-w-2xl">Standard body text used for general content. The quick brown fox jumps over the lazy dog.</p>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-sm</span>
+              <p class="text-sm font-body text-dark-text-muted max-w-2xl">Small text used for metadata, captions, and secondary information.</p>
+            </div>
+            <div class="flex flex-col md:flex-row md:items-baseline gap-4 border-b border-dark-border/50 pb-4">
+              <span class="w-24 text-sm text-dark-text-muted font-mono">text-xs</span>
+              <span class="text-xs font-heading font-bold uppercase tracking-widest text-brand-accent">Overline / Tags</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Special Text Effects</h3>
+          <div class="flex flex-wrap gap-8">
+            <div class="p-6 rounded-xl bg-dark-surface border border-dark-border shadow-sm">
+              <h3 class="text-3xl font-heading font-extrabold text-gradient mb-2">Gradient Text</h3>
+              <p class="text-xs text-dark-text-muted font-mono">.text-gradient</p>
+            </div>
+            <div class="p-6 rounded-xl bg-dark-surface border border-dark-border shadow-sm">
+              <h3 class="text-3xl font-heading font-extrabold text-stroke-brand mb-2">Stroke Text</h3>
+              <p class="text-xs text-dark-text-muted font-mono">.text-stroke-brand</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Colors & Surfaces -->
+    <section id="colors" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">3. Colors & Surfaces</h2>
+        <p class="text-dark-text-muted font-body">Brand colors, semantic colors, and surface treatments.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Brand Colors</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-xl bg-brand-dark shadow-md"></div>
+              <div>
+                <div class="font-heading font-bold text-dark-text">Brand Dark</div>
+                <div class="text-xs font-mono text-dark-text-muted">var(--color-brand-dark) / #40585E</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-xl bg-brand-orange shadow-md"></div>
+              <div>
+                <div class="font-heading font-bold text-dark-text">Brand Orange</div>
+                <div class="text-xs font-mono text-dark-text-muted">var(--color-brand-orange) / #D8A63C</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-xl bg-brand-accent shadow-md"></div>
+              <div>
+                <div class="font-heading font-bold text-dark-text">Brand Accent</div>
+                <div class="text-xs font-mono text-dark-text-muted">var(--color-brand-accent) / #848559</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-xl bg-brand-light border border-dark-border shadow-sm"></div>
+              <div>
+                <div class="font-heading font-bold text-dark-text">Brand Light</div>
+                <div class="text-xs font-mono text-dark-text-muted">var(--color-brand-light) / #F9F8F6</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Surfaces</h3>
+          <div class="space-y-6">
+            <div class="glass-panel p-6 rounded-2xl">
+              <div class="font-heading font-bold text-dark-text mb-1">Glass Panel</div>
+              <div class="text-xs font-mono text-dark-text-muted mb-2">.glass-panel</div>
+              <p class="text-sm text-dark-text-muted">Primary surface with backdrop blur, white transparency, and subtle shadow.</p>
+            </div>
+            
+            <div class="animated-glow-border glass-panel p-6 rounded-2xl">
+              <div class="font-heading font-bold text-dark-text mb-1">Animated Glow Border</div>
+              <div class="text-xs font-mono text-dark-text-muted mb-2">.animated-glow-border .glass-panel</div>
+              <p class="text-sm text-dark-text-muted">Used for highlighted or active elements.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. UI Components -->
+    <section id="components" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">4. UI Components</h2>
+        <p class="text-dark-text-muted font-body">Buttons, cards, badges, and other interactive elements.</p>
+      </div>
+      
+      <div class="space-y-8">
+        <!-- Buttons -->
+        <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Buttons</h3>
+          <div class="flex flex-wrap gap-6 items-center">
+            <button class="bg-brand-orange hover:bg-brand-orange/90 text-dark-bg font-heading font-bold py-3 px-6 rounded-xl transition-all shadow-lg flex items-center gap-2 group">
+              Primary Button
+              <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+            
+            <button class="bg-dark-surface hover:bg-dark-border text-dark-text border border-dark-border font-heading font-bold py-3 px-6 rounded-xl transition-all shadow-sm flex items-center gap-2">
+              Secondary Button
+            </button>
+            
+            <button class="bg-brand-orange/10 hover:bg-brand-orange/20 text-brand-orange font-heading font-bold py-3 px-6 rounded-xl transition-all flex items-center gap-2">
+              <i data-lucide="play-circle" class="w-5 h-5"></i>
+              Action Button
+            </button>
+
+            <button disabled class="bg-dark-surface/50 text-dark-text-muted font-heading font-bold py-3 px-6 rounded-xl cursor-not-allowed flex items-center gap-2">
+              <div class="w-5 h-5 border-2 border-dark-text-muted/30 border-t-dark-text-muted rounded-full animate-spin"></div>
+              Loading State
+            </button>
+          </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Module Cards</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Active Card -->
+            <div class="glass-panel shadow-[0_8px_30px_rgba(216,166,60,0.15)] ring-1 ring-brand-orange p-5 rounded-[1.5rem] transition-all duration-300">
+              <div class="flex items-start justify-between mb-3">
+                <span class="text-xs font-heading font-bold uppercase tracking-widest text-brand-orange">
+                  Módulo 1
+                </span>
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                  <svg class="w-full h-full transform -rotate-90">
+                    <circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="3" fill="transparent" class="text-dark-border" />
+                    <circle cx="20" cy="20" r="16" stroke="#D8A63C" stroke-width="3" fill="transparent" stroke-dasharray="100.53" stroke-dashoffset="50.26" stroke-linecap="round" />
+                  </svg>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-[10px] font-mono font-bold text-dark-text-muted">50%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 mb-2">
+                <div class="mt-1 text-brand-orange">
+                  <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg leading-tight text-dark-text">
+                  Active Module Card
+                </h3>
+              </div>
+            </div>
+
+            <!-- Inactive/Hover Card -->
+            <div class="glass-panel hover:shadow-md p-5 rounded-[1.5rem] transition-all duration-300 cursor-pointer">
+              <div class="flex items-start justify-between mb-3">
+                <span class="text-xs font-heading font-bold uppercase tracking-widest text-brand-blue">
+                  Módulo 2
+                </span>
+                <div class="relative w-10 h-10 flex items-center justify-center">
+                  <svg class="w-full h-full transform -rotate-90">
+                    <circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="3" fill="transparent" class="text-dark-border" />
+                  </svg>
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-[10px] font-mono font-bold text-dark-text-muted">0%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 mb-2">
+                <div class="mt-1 text-brand-blue opacity-80">
+                  <i data-lucide="cpu" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-heading font-bold text-lg leading-tight text-dark-text-muted">
+                  Inactive Module Card
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges & List Items -->
+        <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+          <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-6 border-b border-dark-border pb-2">Badges & List Items</h3>
+          
+          <div class="flex flex-wrap gap-4 mb-8">
+            <span class="inline-block px-4 py-1.5 rounded-full text-xs font-heading font-bold uppercase tracking-widest border bg-brand-orange/10 text-brand-orange border-brand-orange/30">
+              Tag Badge
+            </span>
+            <span class="text-xs font-heading font-bold text-brand-accent bg-brand-accent/10 px-3 py-1 rounded-full">
+              Status Badge
+            </span>
+          </div>
+
+          <div class="space-y-4 max-w-2xl">
+            <div class="flex items-center justify-between p-5 rounded-2xl bg-dark-surface/40 border border-dark-border hover:border-brand-orange transition-all duration-300 group cursor-pointer hover:shadow-md">
+              <div class="flex items-center gap-5">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors shadow-sm bg-dark-surface text-dark-text-muted group-hover:text-brand-orange group-hover:bg-brand-orange/10">
+                  <i data-lucide="file-text" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-heading font-bold transition-colors text-lg text-dark-text group-hover:text-brand-orange">
+                    Lesson Item (Incomplete)
+                  </h4>
+                  <span class="text-xs font-heading font-semibold uppercase tracking-wider text-dark-text-muted">explain</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between p-5 rounded-2xl bg-dark-surface/40 border border-dark-border transition-all duration-300">
+              <div class="flex items-center gap-5">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-brand-accent/10 text-brand-accent border border-brand-accent/20">
+                  <i data-lucide="check-circle" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-heading font-bold text-lg text-dark-text">
+                    Lesson Item (Completed)
+                  </h4>
+                  <span class="text-xs font-heading font-semibold uppercase tracking-wider text-dark-text-muted">quiz</span>
+                </div>
+              </div>
+              <span class="text-xs font-heading font-bold text-brand-accent bg-brand-accent/10 px-3 py-1 rounded-full">
+                Concluída
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Layout & Spacing -->
+    <section id="layout" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">5. Layout & Spacing</h2>
+        <p class="text-dark-text-muted font-body">Grid systems, max-widths, and padding patterns.</p>
+      </div>
+      
+      <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+        <div class="space-y-8">
+          <div>
+            <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-4">Main Container</h3>
+            <div class="bg-dark-surface/50 border border-dark-border border-dashed rounded-xl p-4 text-center">
+              <span class="text-sm font-mono text-dark-text-muted">max-w-7xl mx-auto px-6</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-4">Grid Layout (lg:grid-cols-12)</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div class="lg:col-span-4 bg-brand-orange/20 border border-brand-orange/30 rounded-xl p-6 text-center flex items-center justify-center min-h-[100px]">
+                <span class="text-sm font-mono text-dark-text font-bold">Sidebar (col-span-4)</span>
+              </div>
+              <div class="lg:col-span-8 bg-brand-blue/10 border border-brand-blue/20 rounded-xl p-6 text-center flex items-center justify-center min-h-[100px]">
+                <span class="text-sm font-mono text-dark-text font-bold">Main Content (col-span-8)</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-heading font-bold uppercase tracking-widest text-brand-orange mb-4">Panel Padding</h3>
+            <div class="flex flex-wrap gap-4">
+              <div class="glass-panel rounded-[2rem] p-6 flex items-center justify-center">
+                <span class="text-sm font-mono text-dark-text-muted">p-6 (Standard)</span>
+              </div>
+              <div class="glass-panel rounded-[2rem] p-8 md:p-10 flex items-center justify-center">
+                <span class="text-sm font-mono text-dark-text-muted">p-8 md:p-10 (Large)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Motion & Interaction -->
+    <section id="motion" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">6. Motion & Interaction</h2>
+        <p class="text-dark-text-muted font-body">Hover states, transitions, and keyframe animations.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="glass-panel rounded-[2rem] p-8 flex flex-col items-center justify-center text-center group cursor-pointer parallax-subtle">
+          <div class="w-16 h-16 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange group-hover:scale-110 transition-transform duration-300 mb-4">
+            <i data-lucide="mouse-pointer" class="w-8 h-8"></i>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2 text-dark-text">Hover Scale</h3>
+          <p class="text-xs font-mono text-dark-text-muted">group-hover:scale-110<br>transition-transform duration-300</p>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-8 flex flex-col items-center justify-center text-center parallax-subtle">
+          <div class="w-16 h-16 rounded-full bg-brand-accent/10 flex items-center justify-center text-brand-accent mb-4">
+            <span class="w-4 h-4 rounded-full bg-brand-accent animate-pulse shadow-[0_0_10px_rgba(132,133,89,0.8)]"></span>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2 text-dark-text">Pulse Indicator</h3>
+          <p class="text-xs font-mono text-dark-text-muted">animate-pulse</p>
+        </div>
+
+        <div class="glass-panel rounded-[2rem] p-8 flex flex-col items-center justify-center text-center parallax-subtle">
+          <div class="w-16 h-16 rounded-xl bg-dark-surface/50 flex items-center justify-center text-dark-text mb-4">
+            <i data-lucide="loader" class="w-8 h-8 animate-spin"></i>
+          </div>
+          <h3 class="font-heading font-bold text-lg mb-2 text-dark-text">Spin Animation</h3>
+          <p class="text-xs font-mono text-dark-text-muted">animate-spin</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Icons -->
+    <section id="icons" class="scroll-mt-24">
+      <div class="mb-8">
+        <h2 class="text-3xl font-heading font-extrabold text-dark-text mb-2">7. Icons</h2>
+        <p class="text-dark-text-muted font-body">Lucide React icons used throughout the interface.</p>
+      </div>
+      
+      <div class="glass-panel rounded-[2rem] p-8 parallax-subtle">
+        <div class="flex flex-wrap gap-6">
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="book-open"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">book-open</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="check-circle"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">check-circle</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="lock"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">lock</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="play-circle"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">play-circle</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="file-text"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">file-text</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="help-circle"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">help-circle</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="cpu"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">cpu</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="terminal"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">terminal</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-12 h-12 rounded-xl bg-dark-surface flex items-center justify-center text-dark-text-muted">
+              <i data-lucide="trophy"></i>
+            </div>
+            <span class="text-xs font-mono text-dark-text-muted">trophy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Matrix Background Logic
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const handleResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+    window.addEventListener('resize', handleResize);
+
+    const chars = '01';
+    const colorsDark = ['#D8A63C', '#F8E8B0', '#E5C158', '#FFFFFF'];
+
+    const drops = [];
+    const maxDrops = 120;
+
+    for (let i = 0; i < maxDrops; i++) {
+      drops.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        z: Math.random() * 0.8 + 0.2,
+        speed: (Math.random() * 1.5 + 0.5) * (Math.random() > 0.5 ? 1 : -1),
+        color: colorsDark[Math.floor(Math.random() * colorsDark.length)],
+        length: Math.floor(Math.random() * 5) + 3,
+        chars: Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * chars.length)])
+      });
+    }
+
+    let lastScrollY = window.scrollY;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      lastScrollY = currentScrollY;
+
+      ctx.textAlign = 'center';
+      const baseAlpha = 0.4;
+
+      drops.forEach(drop => {
+        const fontSize = Math.floor(drop.z * 14 + 8);
+        ctx.font = `600 ${fontSize}px "JetBrains Mono", "Inter", monospace`;
+        
+        if (Math.random() > 0.95) {
+          drop.chars[Math.floor(Math.random() * drop.length)] = chars[Math.floor(Math.random() * chars.length)];
+        }
+        
+        if (Math.random() > 0.99) {
+          drop.color = colorsDark[Math.floor(Math.random() * colorsDark.length)];
+        }
+
+        for (let i = 0; i < drop.length; i++) {
+          ctx.fillStyle = drop.color;
+          ctx.globalAlpha = drop.z * baseAlpha * (1 - i / drop.length);
+          
+          const yPos = drop.y + (drop.speed > 0 ? -i : i) * (fontSize * 1.2);
+          ctx.fillText(drop.chars[i], drop.x, yPos);
+        }
+
+        drop.y += drop.speed * drop.z;
+        drop.y -= scrollDelta * drop.z * 0.4;
+
+        const totalHeight = fontSize * drop.length;
+        if (drop.y > height + totalHeight) drop.y = -totalHeight;
+        if (drop.y < -totalHeight) drop.y = height + totalHeight;
+      });
+
+      requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    // GSAP Parallax Logic
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      
+      // Ambient Blobs Parallax
+      gsap.to('#parallax-blob-1', { y: scrollY * 0.15, duration: 0.5, ease: 'power1.out', overwrite: 'auto' });
+      gsap.to('#parallax-blob-2', { y: scrollY * -0.1, duration: 0.5, ease: 'power1.out', overwrite: 'auto' });
+      gsap.to('#parallax-blob-3', { y: scrollY * 0.08, duration: 0.5, ease: 'power1.out', overwrite: 'auto' });
+
+      // Subtle Parallax for Cards
+      const parallaxElements = document.querySelectorAll('.parallax-subtle');
+      parallaxElements.forEach((el) => {
+        const speed = 0.03;
+        const rect = el.getBoundingClientRect();
+        const elementCenter = rect.top + rect.height / 2;
+        const viewportCenter = window.innerHeight / 2;
+        const distance = elementCenter - viewportCenter;
+        
+        gsap.to(el, {
+          y: distance * speed,
+          duration: 0.5,
+          ease: 'power1.out',
+          overwrite: 'auto'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

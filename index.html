@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EvidentIA — Central de Inteligência Acadêmica & Dashboard Bibliométrico</title>
+  
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* === CSS VARIABLES === */
+    :root {
+      --bg-primary: #030712;
+      --bg-secondary: #0F172A;
+      --text-primary: #f3f4f6;
+      --text-secondary: #94a3b8;
+      --gold-vibrant: #E8BD56;
+      --gold-classic: #B4861F;
+      --green-slate: #40585E;
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --glow: rgba(232, 189, 86, 0.15);
+    }
+
+    html.light {
+      --bg-primary: #F5F4EE;
+      --bg-secondary: #FFFFFF;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --gold-vibrant: #B4861F;
+      --gold-classic: #8B6318;
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --card-border: rgba(0, 0, 0, 0.06);
+      --glow: rgba(180, 134, 31, 0.12);
+    }
+
+    * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono-jet { font-family: 'JetBrains Mono', monospace; }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+    }
+
+    .badge-gold {
+      background: rgba(232, 189, 86, 0.1);
+      border: 1px solid rgba(232, 189, 86, 0.25);
+      color: var(--gold-vibrant);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-classic), var(--gold-vibrant));
+      color: #030712;
+      font-weight: 800;
+      transition: all 0.25s ease;
+    }
+
+    .btn-gold:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 40px rgba(232, 189, 86, 0.4);
+    }
+
+    /* Fade-in scroll */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Float parallax */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-14px); }
+    }
+    .float-parallax { animation: float 6s ease-in-out infinite; }
+
+    /* Pulse glow nos CTAs */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(232, 189, 86, 0.3); }
+      50%       { box-shadow: 0 0 50px rgba(232, 189, 86, 0.55); }
+    }
+    .pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+    /* Badge pulsante no hero */
+    @keyframes badge-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.65; }
+    }
+    .badge-pulse { animation: badge-pulse 2s ease-in-out infinite; }
+
+    /* Custom Floating animations for ambient canvas blobs */
+    @keyframes float-blob-1 {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(6%, 8%) scale(1.15); }
+    }
+
+    @keyframes float-blob-2 {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-8%, -5%) scale(1.08); }
+    }
+
+    .blob {
+      position: absolute;
+      filter: blur(95px);
+      border-radius: 50%;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .blob-1 {
+      top: -10%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: var(--gold-vibrant);
+      animation: float-blob-1 25s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      bottom: -20%;
+      right: -10%;
+      width: 60vw;
+      height: 60vw;
+      background: var(--green-slate);
+      animation: float-blob-2 30s ease-in-out infinite alternate-reverse;
+    }
+
+    /* Pulse logo in the reveal section */
+    @keyframes pulse-logo {
+      0%, 100% { filter: drop-shadow(0 0 12px rgba(232, 189, 86, 0.3)); }
+      50%      { filter: drop-shadow(0 0 28px rgba(232, 189, 86, 0.6)); }
+    }
+    .animate-pulse-logo {
+      animation: pulse-logo 3s ease-in-out infinite;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="selection:bg-yellow-500/30 selection:text-white hide-scrollbar min-h-screen relative overflow-x-hidden">
+
+  <!-- Ambient Background Blobs -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <!-- SEÇÃO 0 — HEADER STICKY MINIMALISTA -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 h-16 glass-card border-b bg-[var(--bg-secondary)]/85 backdrop-blur-lg flex items-center transition-all duration-350">
+    <div class="max-w-7xl mx-auto w-full px-6 flex items-center justify-between">
+      <!-- Logo Esquerda -->
+      <a href="#" class="flex items-center">
+        <img id="header-logo" src="/logo_evidencIA_night.png" alt="EvidentIA Logo" class="h-8 w-auto object-contain transition-all duration-300">
+      </a>
+
+      <!-- Controls Direita -->
+      <div class="flex items-center gap-3">
+        <!-- Switch Tema -->
+        <button id="theme-toggle" aria-label="Alternar modo claro/escuro" class="p-2 mr-1 rounded-full border border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--gold-vibrant)] text-base cursor-pointer hover:bg-[var(--gold-vibrant)]/10 transition-all font-mono-jet flex items-center justify-center">
+          🌞
+        </button>
+        <!-- CTA Principal -->
+        <a href="#pricing" class="btn-gold rounded-xl px-4 py-2 text-xs md:text-sm font-bold tracking-wide transition-all duration-200">
+          QUERO MEU ACESSO
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEÇÃO 1 — HERO (Above the Fold) -->
+  <section class="relative pt-32 pb-20 px-6 max-w-7xl mx-auto z-10 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Coluna Esquerda: Texto -->
+      <div class="lg:col-span-7 flex flex-col justify-center text-left">
+        <!-- Badge Pulsante -->
+        <div class="badge-pulse badge-gold rounded-full px-4 py-1.5 text-xs font-mono-jet font-bold tracking-widest uppercase w-fit mb-6">
+          🚀 LANÇAMENTO EXCLUSIVO — VAGAS LIMITADAS
+        </div>
+        
+        <!-- H1 -->
+        <h1 class="font-jakarta font-extrabold text-3xl md:text-5xl lg:text-6xl leading-tight tracking-tight text-[var(--text-primary)]">
+          Sua Dissertação, Tese ou Artigo Científico Prontos em Uma Fração do Tempo — Com IA de Verdade, Grafos Dinâmicos e Formatação <span style="color:var(--gold-vibrant)">ABNT</span> Automática
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="mt-6 text-base md:text-lg text-[var(--text-secondary)] font-normal leading-relaxed max-w-xl">
+          A única plataforma bibliométrica do Brasil que conecta inteligência artificial de nível científico, grafos de co-citação em tempo real e referências formatadas com 100% de precisão. Pare de perder semanas formatando — e comece a produzir ciência.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+          <a href="https://chk.eduzz.com/6W4G1RYY0Z" target="_blank" class="btn-gold pulse-glow rounded-2xl px-8 py-5 text-center text-base md:text-lg font-extrabold flex items-center justify-center justify-items-center gap-2">
+            QUERO EXPERIMENTAR AGORA →
+          </a>
+          <a href="#features" class="border border-[var(--gold-vibrant)] text-center text-[var(--gold-vibrant)] bg-transparent rounded-2xl px-8 py-5 font-bold hover:bg-[var(--gold-vibrant)]/10 transition-all duration-250">
+            ↓ Ver como funciona
+          </a>
+        </div>
+
+        <!-- Trust indicators -->
+        <div class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-[var(--text-secondary)] font-medium">
+          <span class="flex items-center gap-1">✓ Acesso vitalício</span>
+          <span class="flex items-center gap-1">· ✓ Sem mensalidade</span>
+          <span class="flex items-center gap-1">· ✓ Funciona 100% online</span>
+          <span class="flex items-center gap-1">· ✓ Em português</span>
+        </div>
+      </div>
+
+      <!-- Coluna Direita: Visual do App -->
+      <div class="lg:col-span-5 relative w-full flex justify-center">
+        <!-- Wrappper do Iframe com efeito 3D em desktop e plano em mobile -->
+        <div class="relative w-full max-w-md lg:max-w-none rounded-2xl overflow-hidden border border-[var(--gold-vibrant)]/20 shadow-2xl bg-[#090D1A] transition-all duration-500 lg:[transform:perspective(1200px)_rotateY(-4deg)_rotateX(2deg)] [box-shadow:0_0_60px_rgba(232,189,86,0.08)]">
+          <!-- Overlay de loading que some após carregar -->
+          <div id="iframe-loading-overlay" class="absolute inset-0 bg-slate-950/90 z-25 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-10 h-10 border-4 border-[var(--gold-vibrant)] border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-sm font-mono-jet text-[var(--text-secondary)]">Inicializando console bibliométrico...</p>
+          </div>
+
+          <!-- Iframe do App (Showcase Decorativa no Hero - pointer-events: none) -->
+          <iframe
+            id="hero-iframe"
+            src="https://academic-bibliometric-dashboard-607912449171.us-west1.run.app"
+            width="100%"
+            height="480"
+            style="border:none; display:block; border-radius:16px; pointer-events:none;"
+            allow="clipboard-write; clipboard-read"
+            loading="lazy"
+            onload="document.getElementById('iframe-loading-overlay').style.display='none'"
+            title="EvidentIA — Dashboard Bibliométrico Ao Vivo">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO TOUR VIRTUAL — VÍDEO COMPLETO -->
+  <section class="py-16 md:py-24 relative z-10" style="background-color: var(--bg-primary);">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-10 md:mb-12">
+        <span class="text-[10px] sm:text-xs font-mono-jet font-bold text-[var(--gold-vibrant)] uppercase tracking-widest bg-[var(--gold-vibrant)]/10 px-3 py-1.5 rounded-full border border-[var(--gold-vibrant)]/20 animate-pulse inline-block">
+          ✦ Demonstração Completa
+        </span>
+        <h2 class="font-jakarta font-black text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] mt-4">
+          Tour Virtual pelo EvidentIA
+        </h2>
+        <p class="mt-4 text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
+          Assista ao vídeo abaixo para ver na prática como a nossa inteligência artificial automatiza o levantamento, classificação, fichamento e formatação da sua fundamentação teórica em segundos.
+        </p>
+      </div>
+
+      <div class="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border bg-black aspect-video transition-all duration-300" style="border-color: var(--card-border); aspect-ratio: 16/9;">
+        <iframe 
+          class="w-full h-full border-0"
+          src="https://www.youtube.com/embed/_nzGxswKnn8" 
+          title="Tour Virtual pelo EvidentIA" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="mt-10 md:mt-14 text-center">
+        <a 
+          href="https://chk.eduzz.com/6W4G1RYY0Z" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-gold pulse-glow inline-block rounded-2xl px-12 py-5 text-base md:text-lg font-extrabold shadow-[0_10px_40px_rgba(232,189,86,0.3)] transition-all hover:-translate-y-1 cursor-pointer max-w-xs md:max-w-md w-full"
+        >
+          Quero Garantir o Evidentia -->
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 2 — DOR / PROBLEMA -->
+  <section class="py-20 bg-[var(--bg-secondary)] relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto">
+        <h2 class="font-jakarta font-bold text-3xl md:text-4xl text-[var(--text-primary)] fade-up">
+          Você Reconhece Essa Rotina?
+        </h2>
+        <p class="mt-4 text-base text-[var(--text-secondary)] fade-up">
+          Fazer pesquisa científica no Brasil é um teste extremo de paciência. Veja se você já passou por isso:
+        </p>
+      </div>
+
+      <!-- Grid de Dores -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 w-full">
+        <!-- Card 1 -->
+        <div class="glass-card rounded-2xl p-6 fade-up border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] hover:-translate-y-1 transition-all duration-300">
+          <div class="text-red-400 text-2xl font-bold mb-4">⚠️</div>
+          <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)]">Trabalho manual e repetitivo</h3>
+          <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+            Passa HORAS formatando referências em ABNT e mesmo assim o orientador encontra erros e devolve o texto.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card rounded-2xl p-6 fade-up border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] hover:-translate-y-1 transition-all duration-300">
+          <div class="text-red-400 text-2xl font-bold mb-4">⚠️</div>
+          <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)]">Falta de visão panorâmica</h3>
+          <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+            Lê dezenas de abstracts no Google Scholar, um por um, sem conseguir ver o panorama geral e os caminhos temáticos.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card rounded-2xl p-6 fade-up border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] hover:-translate-y-1 transition-all duration-300">
+          <div class="text-red-400 text-2xl font-bold mb-4">⚠️</div>
+          <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)]">Ferramentas caras em dólar</h3>
+          <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+            Paga assinaturas de ferramentas internacionais em DÓLAR que não entendem as normas ABNT nem o Qualis CAPES brasileiro.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="glass-card rounded-2xl p-6 fade-up border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] hover:-translate-y-1 transition-all duration-300">
+          <div class="text-red-400 text-2xl font-bold mb-4">⚠️</div>
+          <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)]">Colagem sem estrutura visual</h3>
+          <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+            Monta revisões de literatura copiando e colando trechos isolados no Word, sem um nexo ou encadeamento metodológico robusto.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="glass-card rounded-2xl p-6 fade-up border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] hover:-translate-y-1 transition-all duration-300">
+          <div class="text-red-400 text-2xl font-bold mb-4">⚠️</div>
+          <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)]">Opinião sem respaldo científico</h3>
+          <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+            Não consegue discernir se as evidências da literatura convergem ou divergem do seu tema, ficando preso ao "achismo".
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="glass-card rounded-2xl p-6 fade-up border-transparent hover:border-red-500/20 hover:bg-red-500/[0.02] hover:-translate-y-1 transition-all duration-300">
+          <div class="text-red-400 text-2xl font-bold mb-4">⚠️</div>
+          <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)]">Perda de pontos cruciais</h3>
+          <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+            Entrega trabalhos acadêmicos com formatação amadora e perde notas por falhas bibliográficas que poderiam ser sanadas.
+          </p>
+        </div>
+      </div>
+
+      <!-- Fechamento Emocional -->
+      <div class="mt-12 text-center max-w-2xl mx-auto fade-up">
+        <p class="text-lg md:text-xl font-bold text-[var(--gold-vibrant)] leading-relaxed">
+          "Se você respondeu 'sim' para pelo menos UMA dessas situações, o EvidentIA foi construído especificamente para resolver TODAS elas — de uma vez."
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 3 — TRANSIÇÃO / REVELAÇÃO DO PRODUTO -->
+  <section class="py-16 bg-gradient-to-b from-[var(--bg-primary)] to-[var(--bg-secondary)] relative z-10 flex flex-col items-center justify-center text-center px-6">
+    <div class="max-w-3xl">
+      <h3 class="font-jakarta font-bold text-2xl md:text-3xl text-[var(--text-primary)] max-w-3xl leading-relaxed fade-up">
+        E se existisse uma plataforma que fizesse TUDO isso por você — em português, com precisão científica, e por um preço que cabe no bolso de qualquer pesquisador?
+      </h3>
+
+      <!-- Logo EvidentIA grande com efeito animado -->
+      <div class="my-8 relative">
+        <img id="reveal-logo" src="/logo_sem_nome_night.png" alt="EvidentIA Ícone" class="w-20 h-20 mx-auto animate-pulse-logo transition-all duration-300">
+      </div>
+
+      <p class="text-lg md:text-xl font-medium text-[var(--text-secondary)] fade-up">
+        Conheça o EvidentIA — a Central Bibliométrica com IA mais avançada do Brasil.
+      </p>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 4 — FEATURES (#features) -->
+  <section id="features" class="py-20 bg-[var(--bg-primary)] relative z-10 w-full">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-jakarta font-extrabold text-3xl md:text-4xl text-[var(--text-primary)] fade-up">
+          O Que o EvidentIA Faz Por Você
+        </h2>
+        <p class="mt-4 text-base text-[var(--text-secondary)] fade-up">
+          Combinamos mineração de dados em tempo real e inteligência artificial para facilitar sua rotina científica.
+        </p>
+      </div>
+
+      <!-- Grid de 6 features -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 w-full">
+        <!-- Feature 1 -->
+        <div class="glass-card rounded-2xl p-7 fade-up hover:border-[var(--gold-vibrant)]/30 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="font-mono-jet text-[var(--gold-vibrant)] text-3xl font-bold flex items-center justify-between">
+              <span>01</span>
+              <span>🔍</span>
+            </div>
+            <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)] mt-4">
+              BUSCA BIBLIOMÉTRICA MULTI-FONTE
+            </h3>
+            <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              Pesquise em OpenAlex, Crossref, Semantic Scholar, CORE e Google Scholar simultaneamente. Encontre até 100 artigos de uma vez — com metadados completos, abstract, citações e DOI verificado.
+            </p>
+          </div>
+          <span class="badge-gold text-[10px] font-mono-jet font-semibold mt-4 px-3 py-1 rounded-full w-fit">
+            5 BASES SIMULTÂNEAS
+          </span>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="glass-card rounded-2xl p-7 fade-up hover:border-[var(--gold-vibrant)]/30 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="font-mono-jet text-[var(--gold-vibrant)] text-3xl font-bold flex items-center justify-between">
+              <span>02</span>
+              <span>🕸</span>
+            </div>
+            <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)] mt-4">
+              GRAFOS DE CO-CITAÇÃO E SIMILARIDADE
+            </h3>
+            <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              Visualize as conexões entre artigos em grafos interativos D3 de força-dirigida. Descubra obras seminais, trabalhos derivados e clusters temáticos — como um raio-X visual da sua área de pesquisa.
+            </p>
+          </div>
+          <span class="badge-gold text-[10px] font-mono-jet font-semibold mt-4 px-3 py-1 rounded-full w-fit">
+            ESTILO CONNECTED PAPERS
+          </span>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="glass-card rounded-2xl p-7 fade-up hover:border-[var(--gold-vibrant)]/30 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="font-mono-jet text-[var(--gold-vibrant)] text-3xl font-bold flex items-center justify-between">
+              <span>03</span>
+              <span>📊</span>
+            </div>
+            <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)] mt-4">
+              MAPEAMENTO 3D BIBLIOMÉTRICO
+            </h3>
+            <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              Explore seu corpus científico em uma dispersão tridimensional interativa (Plotly). Rotacione, aproxime e identifique padrões que são INVISÍVEIS em listas estáticas.
+            </p>
+          </div>
+          <span class="badge-gold text-[10px] font-mono-jet font-semibold mt-4 px-3 py-1 rounded-full w-fit">
+            EXCLUSIVO BRASIL
+          </span>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="glass-card rounded-2xl p-7 fade-up hover:border-[var(--gold-vibrant)]/30 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="font-mono-jet text-[var(--gold-vibrant)] text-3xl font-bold flex items-center justify-between">
+              <span>04</span>
+              <span>🤖</span>
+            </div>
+            <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)] mt-4">
+              FICHAMENTO AUTOMATIZADO COM IA
+            </h3>
+            <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              Cada artigo recebe um fichamento acadêmico completo (11 campos: objetivo, metodologia, resultados, lacunas, palavras-chave, citação sugerida...) gerado por IA de nível científico — em português, formatado em ABNT.
+            </p>
+          </div>
+          <span class="badge-gold text-[10px] font-mono-jet font-semibold mt-4 px-3 py-1 rounded-full w-fit">
+            11 CAMPOS AUTOMÁTICOS
+          </span>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="glass-card rounded-2xl p-7 fade-up hover:border-[var(--gold-vibrant)]/30 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="font-mono-jet text-[var(--gold-vibrant)] text-3xl font-bold flex items-center justify-between">
+              <span>05</span>
+              <span>📝</span>
+            </div>
+            <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)] mt-4">
+              REVISÃO SISTEMÁTICA INSTANTÂNEA
+            </h3>
+            <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              Gere RSL e RIL estruturadas em um clique. Exportáveis para Word (.DOCX) com formatação acadêmica oficial. O que levava semanas agora leva segundos.
+            </p>
+          </div>
+          <span class="badge-gold text-[10px] font-mono-jet font-semibold mt-4 px-3 py-1 rounded-full w-fit">
+            EXPORTA PARA WORD
+          </span>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="glass-card rounded-2xl p-7 fade-up hover:border-[var(--gold-vibrant)]/30 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between">
+          <div>
+            <div class="font-mono-jet text-[var(--gold-vibrant)] text-3xl font-bold flex items-center justify-between">
+              <span>06</span>
+              <span>⚖</span>
+            </div>
+            <h3 class="font-jakarta font-bold text-lg text-[var(--text-primary)] mt-4">
+              CONSENSO DE EVIDÊNCIAS
+            </h3>
+            <p class="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
+              Faça uma pergunta de pesquisa e o EvidentIA classifica computacionalmente o posicionamento de cada artigo (SIM / NÃO / POSSIVELMENTE). Descubra em segundos o percentual de consenso.
+            </p>
+          </div>
+          <span class="badge-gold text-[10px] font-mono-jet font-semibold mt-4 px-3 py-1 rounded-full w-fit">
+            ÚNICO NO MERCADO
+          </span>
+        </div>
+      </div>
+
+      <!-- Feature Extra Footer Details -->
+      <div class="mt-10 text-center text-sm text-[var(--text-secondary)] font-medium fade-up">
+        + Exportação completa: Word (.DOCX), CSV, PNG, SVG · Citações duais ABNT + APA 7ª · Modo escuro/claro · 100% online, sem instalação
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 5 — DEMO VISUAL / EMBED INTERATIVO -->
+  <section class="py-20 bg-[var(--bg-secondary)] relative z-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-jakarta font-bold text-3xl text-[var(--text-primary)] fade-up">
+          Veja o EvidentIA em Ação
+        </h2>
+        <p class="mt-4 text-base text-[var(--text-secondary)] fade-up">
+          Este é o app REAL rodando ao vivo. Descubra como é fácil pesquisar temas científicos hoje.
+        </p>
+      </div>
+
+      <!-- Container do iframe interativo (interação ativada!) -->
+      <div class="mt-10 w-full max-w-5xl rounded-2xl overflow-hidden border-2 border-[var(--gold-vibrant)]/25 [box-shadow:0_0_80px_rgba(232,189,86,0.08)] bg-[#090D1A] fade-up">
+        <iframe
+          id="demo-iframe"
+          src="https://academic-bibliometric-dashboard-607912449171.us-west1.run.app"
+          width="100%"
+          height="700"
+          style="border:none; display:block;"
+          allow="clipboard-write; clipboard-read"
+          title="EvidentIA App Ao Vivo">
+          O seu navegador não suporta iframes.
+        </iframe>
+      </div>
+
+      <!-- CTA Button abaixo da demo -->
+      <div class="mt-10 text-center fade-up w-full px-4 flex justify-center">
+        <a href="https://chk.eduzz.com/6W4G1RYY0Z" target="_blank" class="btn-gold pulse-glow rounded-2xl px-10 py-5 text-lg font-extrabold max-w-md w-full inline-block">
+          QUERO MEU ACESSO VITALÍCIO →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 6 — AUTORIDADE / QUEM CRIOU (#author) -->
+  <section id="author" class="py-20 bg-gradient-to-b from-[var(--bg-primary)] to-[var(--bg-secondary)] relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <!-- Coluna Esquerda: Foto do Felipe -->
+        <div class="lg:col-span-5 relative flex justify-center fade-up">
+          <!-- Brilho dourado atrás da imagem -->
+          <div class="absolute -inset-6 rounded-3xl opacity-20 blur-3xl pointer-events-none" style="background: radial-gradient(circle, var(--gold-vibrant) 0%, transparent 70%);"></div>
+          
+          <img src="/felipe-asensi-4-1-765x1024.png"
+               alt="Prof. Dr. Felipe Asensi — Fundador do EvidentIA"
+               class="float-parallax relative z-10 rounded-2xl object-cover max-h-[500px] w-full border-2 border-[var(--gold-vibrant)]/25 [box-shadow:0_20px_60px_rgba(0,0,0,0.5)]">
+        </div>
+
+        <!-- Coluna Direita: Texto bibliográfico -->
+        <div class="lg:col-span-7 flex flex-col text-left justify-center fade-up">
+          <!-- Badge -->
+          <div class="badge-gold text-xs font-mono-jet font-bold uppercase tracking-widest w-fit px-3 py-1.5 rounded-full mb-4">
+            CRIADOR DO EVIDENTIA
+          </div>
+
+          <!-- Nome do fundador -->
+          <h2 class="font-jakarta font-extrabold text-3xl md:text-4xl text-[var(--text-primary)]">
+            Prof. Dr. Felipe Asensi
+          </h2>
+
+          <!-- Divisor dourado -->
+          <div class="h-0.5 w-16 bg-[var(--gold-vibrant)] my-4"></div>
+
+          <!-- Texto biográfico COMPLETO -->
+          <div class="font-sans text-[var(--text-secondary)] text-sm md:text-base leading-relaxed space-y-4 font-normal">
+            <p>
+              Felipe Asensi é criador do Movimento #MaisClareza #MenosMistério que tem alavancado a vida acadêmica de mentorados de todas as áreas do conhecimento em mais de 47 países.
+            </p>
+            <p>
+              Pioneiro no mundo em cursos e treinamentos sobre inteligência artificial na vida acadêmica, Asensi é Autor BestSeller na Amazon e tem centenas de livros e artigos científicos. Também realiza consultorias acadêmicas para instituições de ensino e possui atuação como professor e pesquisador no Brasil, Estados Unidos, Colômbia e Portugal.
+            </p>
+            <p>
+              Asensi é CEO da Pembroke Collins, uma ScienceTech americana que possui mais de 30.000 clientes ao redor do mundo. Criou o EvidentIA porque viveu na pele o problema que todo pesquisador enfrenta: a distância brutal entre ter uma ideia brilhante e conseguir executá-la com rigor, velocidade e formatação impecável.
+            </p>
+          </div>
+
+          <!-- Credenciais em Badges -->
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="glass-card rounded-full px-3 py-1.5 text-xs font-mono-jet text-[var(--text-secondary)] border border-[var(--card-border)]">
+              🎓 Doutor em Sociologia (IESP/UERJ)
+            </span>
+            <span class="glass-card rounded-full px-3 py-1.5 text-xs font-mono-jet text-[var(--text-secondary)] border border-[var(--card-border)]">
+              🎓 Doutor em Direito (UGF/IUPERJ)
+            </span>
+            <span class="glass-card rounded-full px-3 py-1.5 text-xs font-mono-jet text-[var(--text-secondary)] border border-[var(--card-border)]">
+              📚 Professor Universitário — BR, EUA, CO, PT
+            </span>
+            <span class="glass-card rounded-full px-3 py-1.5 text-xs font-mono-jet text-[var(--text-secondary)] border border-[var(--card-border)]">
+              🧬 Pesquisador Ativo
+            </span>
+            <span class="glass-card rounded-full px-3 py-1.5 text-xs font-mono-jet text-[var(--text-secondary)] border border-[var(--card-border)]">
+              🏢 CEO Pembroke Collins (ScienceTech USA)
+            </span>
+            <span class="glass-card rounded-full px-3 py-1.5 text-xs font-mono-jet text-[var(--text-secondary)] border border-[var(--card-border)]">
+              📖 Autor BestSeller Amazon
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 7 — COMPARATIVO DE PREÇO (Anchor Pricing) -->
+  <section class="py-20 bg-[var(--bg-primary)] border-t border-[var(--card-border)] relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-jakarta font-bold text-3xl md:text-4xl text-[var(--text-primary)] fade-up">
+          Quanto Você Pagaria Por Tudo Isso?
+        </h2>
+        <p class="mt-4 text-base text-[var(--text-secondary)] fade-up">
+          Comparação sincera: o custo anual das alternativas globais em dólar vs. a facilidade vitalícia nacional.
+        </p>
+      </div>
+
+      <!-- Tabela comparativa glass -->
+      <div class="mt-10 max-w-3xl mx-auto glass-card rounded-2xl overflow-hidden shadow-2xl fade-up border border-[var(--card-border)]">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--bg-secondary)] border-b border-[var(--card-border)] font-mono-jet text-xs uppercase text-[var(--text-secondary)] tracking-wider">
+                <th class="px-6 py-4 font-bold">Ferramenta</th>
+                <th class="px-6 py-4 font-bold">Idioma</th>
+                <th class="px-6 py-4 font-bold">Custo Anual</th>
+                <th class="px-6 py-4 font-bold text-center">Formata ABNT?</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm font-sans">
+              <!-- Connected Papers -->
+              <tr class="border-b border-[var(--card-border)] hover:bg-[var(--bg-secondary)]/50 transition-colors">
+                <td class="px-6 py-4 font-semibold text-[var(--text-primary)]">Connected Papers</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">🇬🇧 Inglês</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">US$72/ano (~R$396)</td>
+                <td class="px-6 py-4 text-center text-red-400 font-bold">❌ Não</td>
+              </tr>
+              <!-- Elicit -->
+              <tr class="border-b border-[var(--card-border)] hover:bg-[var(--bg-secondary)]/50 transition-colors">
+                <td class="px-6 py-4 font-semibold text-[var(--text-primary)]">Elicit</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">🇬🇧 Inglês</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">US$120/ano (~R$660)</td>
+                <td class="px-6 py-4 text-center text-red-400 font-bold">❌ Não</td>
+              </tr>
+              <!-- SciSpace -->
+              <tr class="border-b border-[var(--card-border)] hover:bg-[var(--bg-secondary)]/50 transition-colors">
+                <td class="px-6 py-4 font-semibold text-[var(--text-primary)]">SciSpace</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">🇬🇧 Inglês</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">US$240/ano (~R$1.320)</td>
+                <td class="px-6 py-4 text-center text-red-400 font-bold">❌ Não</td>
+              </tr>
+              <!-- TOTAL CONCORRENTES -->
+              <tr class="border-b border-[var(--card-border)] bg-red-950/10">
+                <td class="px-6 py-4 font-bold text-[var(--text-primary)]">TOTAL CONCORRENTES</td>
+                <td class="px-6 py-4 text-[var(--text-secondary)]">—</td>
+                <td class="px-6 py-4 text-red-300 font-semibold">~R$2.376/ano</td>
+                <td class="px-6 py-4 text-center text-red-400 font-bold">❌ Não</td>
+              </tr>
+              <!-- EvidentIA -->
+              <tr class="bg-gradient-to-r from-[var(--gold-classic)]/20 via-[var(--gold-classic)]/5 to-transparent border-t-2 border-[var(--gold-vibrant)]/30">
+                <td class="px-6 py-4 font-extrabold text-[var(--gold-vibrant)] flex items-center gap-1.5">
+                  <span>🇧🇷 EvidentIA</span>
+                </td>
+                <td class="px-6 py-4 font-semibold text-[var(--gold-vibrant)]">Português</td>
+                <td class="px-6 py-4 font-extrabold text-[var(--gold-vibrant)] text-base">em até 12x 41,06 (BRL) ou 397,00 (BRL) à vista</td>
+                <td class="px-6 py-4 text-center text-emerald-400 font-extrabold text-base">✅ ABNT + APA</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Texto descritivo -->
+      <div class="mt-8 text-center text-sm text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed fade-up">
+        Enquanto os concorrentes internacionais cobram mais de R$2.000 por ano, em inglês, sem suporte ABNT e focado fora do pesquisador brasileiro — o EvidentIA entrega MAIS por MENOS, por um valor extremamente acessível.
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 8 — PREÇO E CTA PRINCIPAL (#pricing) -->
+  <section id="pricing" class="py-20 bg-[var(--bg-secondary)] relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="max-w-xl mx-auto glass-card rounded-3xl p-8 md:p-12 text-center border-2 border-[var(--gold-vibrant)]/35 shadow-2xl [box-shadow:0_0_80px_rgba(232,189,86,0.12)] fade-up">
+        <!-- Badge Promocional -->
+        <span class="badge-pulse badge-gold text-xs font-mono-jet font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mx-auto inline-block">
+          🔥 OFERTA DE LANÇAMENTO
+        </span>
+
+        <!-- Preço anterior -->
+        <p class="mt-6 text-[var(--text-secondary)] line-through text-[15px]">
+          De R$ 4.000,00
+        </p>
+
+        <!-- Preço atual -->
+        <div class="mt-2 font-jakarta font-extrabold text-5xl md:text-6xl text-[var(--gold-vibrant)] flex items-center justify-center gap-1">
+          <span class="text-lg md:text-2xl font-bold font-sans">R$</span>
+          <span data-count="true" data-target="397">4000</span>
+          <span class="text-lg md:text-2xl font-bold font-sans">,00</span>
+        </div>
+
+        <!-- Parcelamento / Formatos -->
+        <p class="mt-3 text-base text-[var(--text-primary)] font-semibold leading-relaxed">
+          ou em até <span class="text-[var(--gold-vibrant)] font-extrabold">12x 41,06 (BRL)</span><br/>
+          <span class="text-xs text-[var(--text-secondary)]">ou 397,00 (BRL) à vista</span>
+        </p>
+
+        <!-- Sub-texto de garantias -->
+        <p class="mt-3 text-xs md:text-sm text-[var(--text-secondary)] font-normal">
+          Assinatura Anual · Suporte Total · Sem limite de uso
+        </p>
+
+        <!-- Botão de Compra Primário -->
+        <a href="https://chk.eduzz.com/6W4G1RYY0Z" target="_blank" class="btn-gold pulse-glow w-full rounded-2xl py-5 text-lg md:text-xl font-extrabold shadow-lg transition-all duration-300 block mt-8">
+          GARANTIR MEU ACESSO: em até 12x 41,06 (BRL) ou 397,00 (BRL) à vista →
+        </a>
+
+        <!-- Selo de Pagamento Seguro -->
+        <p class="mt-5 text-xs text-[var(--text-secondary)] font-medium flex items-center justify-center gap-2">
+          🔒 Pagamento seguro via Eduzz · Pix, Cartão, Boleto
+        </p>
+
+        <!-- Urgência Temporal -->
+        <p class="mt-6 text-red-400 text-sm font-bold leading-relaxed">
+          ⚠️ Após o lançamento, o preço sobe para R$497. Esta oferta pode encerrar a qualquer momento.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 9 — BÔNUS -->
+  <section class="py-20 bg-[var(--bg-primary)] border-t border-[var(--card-border)] relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-jakarta font-bold text-3xl text-[var(--text-primary)] fade-up">
+          Bônus Exclusivos Para Quem Garantir Agora
+        </h2>
+        <p class="mt-3 text-base text-[var(--text-secondary)] fade-up">
+          Além de acesso vitalício à ferramenta mais moderna de pesquisa, você leva estes recursos:
+        </p>
+      </div>
+
+      <!-- Grid 2x2 de bônus -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 w-full">
+        <!-- Bônus 1 -->
+        <div class="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/40 transition-all duration-300 fade-up">
+          <span class="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full">BÔNUS 1</span>
+          <h3 class="text-lg font-bold text-[var(--text-primary)] mt-3">Manual Premium de Redação Científica</h3>
+          <p class="text-sm text-[var(--text-secondary)] italic mt-2">
+            Um e-book completo e direto ensinando a encadear argumentos científicos, do título à conclusão, sem mistérios.
+          </p>
+          <div class="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4">Valor: Grátis (Original: R$97)</div>
+        </div>
+
+        <!-- Bônus 2 -->
+        <div class="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/40 transition-all duration-300 fade-up">
+          <span class="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full">BÔNUS 2</span>
+          <h3 class="text-lg font-bold text-[var(--text-primary)] mt-3">Template estruturado de Artigo em Word</h3>
+          <p class="text-sm text-[var(--text-secondary)] italic mt-2">
+            Estrutura pré-formatada nas principais regras ABNT para que você comece seu artigo acadêmico sem tela em branco.
+          </p>
+          <div class="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4">Valor: Grátis (Original: R$47)</div>
+        </div>
+
+        <!-- Bônus 3 -->
+        <div class="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/40 transition-all duration-300 fade-up">
+          <span class="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full">BÔNUS 3</span>
+          <h3 class="text-lg font-bold text-[var(--text-primary)] mt-3">Workshop Exclusivo "IA na Prática"</h3>
+          <p class="text-sm text-[var(--text-secondary)] italic mt-2">
+            Gravação do treinamento ministrado pelo Dr. Felipe Asensi demonstrando o ciclo completo de revisão de literatura com IA.
+          </p>
+          <div class="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4">Valor: Grátis (Original: R$197)</div>
+        </div>
+
+        <!-- Bônus 4 -->
+        <div class="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/40 transition-all duration-300 fade-up">
+          <span class="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full">BÔNUS 4</span>
+          <h3 class="text-lg font-bold text-[var(--text-primary)] mt-3">Grupo de Apoio e Novidades</h3>
+          <p class="text-sm text-[var(--text-secondary)] italic mt-2">
+            Comunidade ativa com moderadores para sanar dúvidas operacionais e dar dicas sobre novos recursos da Pembroke Collins.
+          </p>
+          <div class="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4">Valor: Grátis (Original: R$147)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 10 — FAQ (Accordion) -->
+  <section class="py-20 bg-[var(--bg-secondary)] relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="font-jakarta font-bold text-3xl text-[var(--text-primary)] fade-up">
+          Perguntas Frequentes
+        </h2>
+        <p class="mt-3 text-base text-[var(--text-secondary)] fade-up">
+          Restou alguma dúvida? Compilamos as principais respostas para você se decidir com segurança.
+        </p>
+      </div>
+
+      <!-- FAQ Container -->
+      <div class="max-w-2xl mx-auto mt-10 space-y-3 fade-up">
+        <!-- Item 1 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">Preciso instalar algo no computador?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              Não. O EvidentIA funciona 100% online, direto no navegador. Funciona no computador, tablet e celular.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">O acesso é realmente vitalício?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              Sim. Você paga uma única vez e usa para sempre. Sem mensalidade, sem renovação, sem surpresas.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">As referências seguem a ABNT atualizada?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              Sim. O EvidentIA segue a NBR 6023 na versão mais recente, além da APA 7ª edição. Citações duais automáticas.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">Funciona para qualquer área do conhecimento?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              Sim. O EvidentIA busca em bases multidisciplinares (OpenAlex, Crossref, Semantic Scholar, CORE, Google Scholar). Serve para Direito, Educação, Saúde, Engenharias, Humanas, Exatas — qualquer área.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">E se eu não souber usar?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              A interface é intuitiva e autoexplicativa. Basta digitar seu tema de pesquisa e o EvidentIA organiza em grafos e tabelas. Se tiver dúvidas, há guias informativos integrados.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">Posso exportar para Word?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              Sim. Fichamentos, revisões de literatura e relatórios de síntese são facilmente exportáveis para Word (.DOCX) formatado, CSV, PNG e SVG.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 7 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">Qual é a diferença para o ChatGPT?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              O ChatGPT é um chatbot genérico que costuma "alucinar" referências inventando títulos, DOIs e links fictícios. O EvidentIA consulta bases científicas reais estruturadas (Crossref, Semantic Scholar, etc.), trazendo dados de artigos verídicos com DOI ativo, gerando gráficos e revisões sobre dados factuais.
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 8 -->
+        <div class="faq-item glass-card rounded-xl overflow-hidden transition-all duration-300 border border-[var(--card-border)]">
+          <header class="faq-header flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-[var(--bg-primary)]/40 transition-colors">
+            <h3 class="font-bold text-sm md:text-base text-[var(--text-primary)]">E depois que a oferta promocional acabar?</h3>
+            <span class="faq-icon text-[var(--gold-vibrant)] text-sm transition-transform duration-300">▼</span>
+          </header>
+          <div class="faq-body max-h-0 overflow-hidden transition-all duration-350 ease-in-out">
+            <div class="px-6 pb-5 text-[var(--text-secondary)] text-sm leading-relaxed">
+              Quem garantir o acesso hoje promocional por em até 12x 41,06 (BRL) ou 397,00 (BRL) à vista mantém o preço promocional na renovação, protegendo-se de aumentos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 11 — CTA FINAL (Urgência e Decisão) -->
+  <section class="py-20 bg-gradient-to-b from-[var(--bg-secondary)] via-[#0a0a1a] to-[var(--bg-primary)] relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="font-jakarta font-extrabold text-3xl md:text-4xl text-center text-[var(--text-primary)] fade-up">
+        Você Tem Duas Opções Agora
+      </h2>
+
+      <!-- Duas Colunas de Escolha -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
+        <!-- Coluna 1: Sem Ação -->
+        <div class="glass-card rounded-2xl p-8 border border-[var(--card-border)] opacity-75 hover:opacity-100 transition-opacity duration-305 flex flex-col justify-between fade-up">
+          <div>
+            <h3 class="text-xl font-bold text-slate-400">Continuar do mesmo jeito</h3>
+            <div class="h-0.5 w-12 bg-slate-500 my-4"></div>
+            <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+              Continuar formatando referências na mão, lendo abstracts um por um, pagando ferramentas caras em dólar que não compreendem as normas metodológicas brasileiras, e gastando semanas em tarefas mecânicas brutas.
+            </p>
+          </div>
+          <span class="text-xs text-slate-500 font-semibold mt-6">✗ Seguir com a rotina pesada e estressante</span>
+        </div>
+
+        <!-- Coluna 2: Com Ação -->
+        <div class="glass-card rounded-2xl p-8 border-2 border-[var(--gold-vibrant)]/45 [box-shadow:0_0_40px_rgba(232,189,86,0.1)] flex flex-col justify-between fade-up">
+          <div>
+            <h3 class="text-xl font-bold text-[var(--gold-vibrant)]">Transformar sua pesquisa agora</h3>
+            <div class="h-0.5 w-12 bg-[var(--gold-vibrant)] my-4"></div>
+            <p class="text-sm text-[var(--text-secondary)] leading-relaxed font-medium">
+              Garantir seu acesso ao EvidentIA por em até 12x 41,06 (BRL) ou 397,00 (BRL) à vista e automatizar de forma profissional e confiável todo o levantamento, classificação e formatação da sua fundamentação teórica.
+            </p>
+          </div>
+          <span class="text-xs text-[var(--gold-vibrant)] font-bold mt-6">✓ Economizar semanas de trabalho acadêmico</span>
+        </div>
+      </div>
+
+      <!-- Botão CTA Final -->
+      <div class="mt-12 text-center fade-up flex justify-center">
+        <a href="https://chk.eduzz.com/6W4G1RYY0Z" target="_blank" class="btn-gold pulse-glow inline-block rounded-2xl px-12 py-6 text-xl font-extrabold max-w-md w-full">
+          SIM, QUERO MEU ACESSO: em até 12x 41,06 (BRL) ou 397,00 (BRL) à vista →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO 12 — FOOTER MÍNIMO -->
+  <footer class="py-12 bg-[var(--bg-primary)] border-t border-[var(--card-border)] relative z-10">
+    <div class="max-w-7xl mx-auto px-6 text-center text-xs text-[var(--text-secondary)] font-medium">
+      <!-- Logo Footer swap com JavaScript -->
+      <div class="mb-4">
+        <img id="footer-logo" src="/logo_evidencIA_night.png" alt="EvidentIA Logo" class="h-6 opacity-60 hover:opacity-100 transition-opacity mx-auto">
+      </div>
+      
+      <p class="leading-relaxed">
+        EvidentIA é uma plataforma desenvolvida por Felipe Asensi — Produção Acadêmica® · academicopremium.com.br
+      </p>
+      <p class="mt-2 text-slate-600 dark:text-slate-500">
+        © 2026 · Todos os direitos reservados.
+      </p>
+    </div>
+  </footer>
+
+  <!-- === JAVASCRIPT COMPLETO DE ALTO IMPACTO === -->
+  <script>
+    // === 1. TOGGLE DARK/LIGHT MODE ===
+    const themeBtn = document.getElementById('theme-toggle');
+    const root = document.documentElement;
+    const logo = document.getElementById('header-logo');
+    const logoFooter = document.getElementById('footer-logo');
+    const revelLogo = document.getElementById('reveal-logo');
+
+    // Carregar preferência salva. Default = DARK.
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      root.classList.add('light');
+      updateLogos('light');
+    } else {
+      root.classList.remove('light');
+      updateLogos('dark');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const isLight = root.classList.toggle('light');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      updateLogos(isLight ? 'light' : 'dark');
+    });
+
+    function updateLogos(mode) {
+      const suffix = mode === 'light' ? 'day' : 'night';
+      if (logo) logo.src = `/logo_evidencIA_${suffix}.png`;
+      if (logoFooter) logoFooter.src = `/logo_evidencIA_${suffix}.png`;
+      if (revelLogo) revelLogo.src = `/logo_sem_nome_${suffix}.png`;
+      themeBtn.textContent = mode === 'light' ? '🌙' : '🌞';
+    }
+
+    // === 2. FAQ ACCORDION ===
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const header = item.querySelector('.faq-header');
+      const body = item.querySelector('.faq-body');
+      const icon = item.querySelector('.faq-icon');
+      
+      header.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        
+        // fecha todos os accordion abertos para manter apenas 1 expandido simultaneamente
+        faqItems.forEach(i => {
+          i.classList.remove('open');
+          const iBody = i.querySelector('.faq-body');
+          const iIcon = i.querySelector('.faq-icon');
+          if (iBody) iBody.style.maxHeight = '0px';
+          if (iIcon) iIcon.style.transform = 'rotate(0deg)';
+        });
+        
+        if (!isOpen) {
+          item.classList.add('open');
+          body.style.maxHeight = body.scrollHeight + 'px';
+          icon.style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+
+    // === 3. FADE-IN ON SCROLL (IntersectionObserver) ===
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, idx) => {
+        if (entry.isIntersecting) {
+          // Pequeno atraso incremental para criar efeito bento cascateado
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, idx * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    fadeEls.forEach(el => observer.observe(el));
+
+    // === 4. COUNTDOWN ANIMADO ===
+    function countDown(el, target, startVal = 4000, duration = 1500) {
+      let current = startVal;
+      const step = (startVal - target) / (duration / 16);
+      const timer = setInterval(() => {
+        current -= step;
+        if (current <= target) {
+          el.textContent = target;
+          clearInterval(timer);
+          return;
+        }
+        el.textContent = Math.floor(current);
+      }, 16);
+    }
+
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.dataset.target, 10);
+          countDown(el, target);
+          countObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
+
+    // === 5. SMOOTH SCROLL para âncoras ===
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const targetId = a.getAttribute('href');
+        if (targetId === '#') return;
+        const target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // === 6. HEADER border-shadow on scroll ===
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('main-header');
+      if (window.scrollY > 20) {
+        header.style.borderBottomColor = 'rgba(232, 189, 86, 0.25)';
+        header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
+      } else {
+        header.style.borderBottomColor = 'rgba(232, 189, 86, 0.12)';
+        header.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
