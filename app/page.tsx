@@ -855,18 +855,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SEÇÃO VÍDEO COMPLEMENTAR — AULA GRATUITA - CASO DE USO REAL: PESQUISA BIBLIOGRÁFICA EM SEGUNDOS */}
+      {/* SEÇÃO VÍDEO COMPLEMENTAR — AULA GRÁTIS - PESQUISA BIBLIOGRÁFICA EM SEGUNDOS */}
       <section className="py-16 md:py-24 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-secondary)" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-10 md:mb-12">
             <span className="text-[10px] sm:text-xs font-mono-jet font-bold text-[var(--gold-vibrant)] uppercase tracking-widest bg-[var(--gold-vibrant)]/10 px-3 py-1.5 rounded-full border border-[var(--gold-vibrant)]/20 animate-pulse inline-block">
-              ✦ Caso de Uso Real
+              ✦ Aula Gratuita
             </span>
             <h2 className="font-jakarta font-black text-3xl md:text-4xl lg:text-5xl text-[var(--text-primary)] mt-4 transition-colors">
-              Veja o EvidentIA em Ação
+              Pesquisa Bibliográfica em Segundos
             </h2>
             <p className="mt-4 text-base md:text-lg text-[var(--text-secondary)] leading-relaxed transition-colors">
-              Um exemplo real de como pesquisadores utilizam o EvidentIA para acelerar sua revisão de literatura e produzir resultados que impressionam bancas e orientadores.
+              Assista a esta aula gratuita e veja na prática como o EvidentIA transforma horas de levantamento bibliográfico em segundos — com resultados de nível internacional.
             </p>
           </div>
 
@@ -877,7 +877,7 @@ export default function Home() {
             <iframe 
               className="w-full h-full border-0"
               src="https://www.youtube.com/embed/abMIPIB5lcE" 
-              title="EvidentIA em Ação — Caso de Uso Real" 
+              title="Aula Gratuita — Pesquisa Bibliográfica em Segundos" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
               allowFullScreen
             />
@@ -895,7 +895,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       {/* SEÇÃO TOUR VIRTUAL — VÍDEO COMPLETO */}
       <section className="py-16 md:py-24 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-primary)" }}>
         <div className="max-w-7xl mx-auto px-6">
