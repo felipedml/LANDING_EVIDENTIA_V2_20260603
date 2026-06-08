@@ -1716,6 +1716,60 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SEÇÃO BÔNUS — MANUAIS INCLUÍDOS */}
+      <section className="py-24 relative z-10 border-t bg-transition overflow-hidden" style={{ borderColor: "var(--card-border)", backgroundColor: "var(--bg-secondary)" }}>
+        {/* Ambient glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06] blur-3xl pointer-events-none bg-[var(--gold-vibrant)]" />
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          {/* Section eyebrow */}
+          <div className="text-center mb-12 fade-up">
+            <span className="badge-gold text-xs font-mono-jet font-bold uppercase tracking-widest px-4 py-2 rounded-full">
+              🎁 BÔNUS EXCLUSIVOS
+            </span>
+            <h2 className="font-jakarta font-extrabold text-3xl md:text-4xl text-[var(--text-primary)] mt-5 transition-colors">
+              Além da Assinatura, Você Leva Estes Bônus
+            </h2>
+            <p className="mt-3 text-base text-[var(--text-secondary)] max-w-xl mx-auto transition-colors">
+              Incluídos gratuitamente para quem garantir acesso agora — sem custo adicional.
+            </p>
+          </div>
+
+          {/* Bonus cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+            {/* Bonus 1 */}
+            <div className="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/45 transition-all duration-300 fade-up bg-transition flex flex-col">
+              <span className="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full w-fit">BÔNUS 1</span>
+              <h3 className="text-lg font-bold text-[var(--text-primary)] mt-3 transition-colors">Manual de Uso e Interpretação de Dados do Evidentia</h3>
+              <div className="mt-4 rounded-xl overflow-hidden border border-[var(--card-border)]">
+                <img
+                  src="/manual-evidentia-img.png"
+                  alt="Manual de Uso e Interpretação de Dados do Evidentia"
+                  className="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.03]"
+                />
+              </div>
+              <div className="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4 transition-colors">Incluso gratuitamente na sua assinatura</div>
+            </div>
+
+            {/* Bonus 2 */}
+            <div className="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/45 transition-all duration-300 fade-up bg-transition flex flex-col">
+              <span className="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full w-fit">BÔNUS 2</span>
+              <h3 className="text-lg font-bold text-[var(--text-primary)] mt-3 transition-colors">Manual de Configuração de APIs de Fontes Bibliográficas</h3>
+              <div className="mt-4 rounded-xl overflow-hidden border border-[var(--card-border)]">
+                <img
+                  src="/manual-apis-evidentia-img.png"
+                  alt="Manual de Configuração de APIs de Fontes Bibliográficas"
+                  className="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.03]"
+                />
+              </div>
+              <div className="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4 transition-colors">Incluso gratuitamente na sua assinatura</div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* SEÇÃO 8 — PREÇO E CTA PRINCIPAL (#pricing) */}
       <section id="pricing" className="py-24 relative z-10 border-t bg-transition" style={{ borderColor: "var(--card-border)", backgroundColor: "var(--bg-secondary)" }}>
         <div className="max-w-7xl mx-auto px-6">
