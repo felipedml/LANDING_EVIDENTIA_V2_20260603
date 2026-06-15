@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css'; // Global styles
 
 export const metadata: Metadata = {
-  title: 'Academic Bibliometric Dashboard',
+  title: 'Evidentia | Pesquisa Bibliográfica em segundos',
   description: 'Console premium de inteligência bibliográfica, bibliométrica e fichamento automático.',
 };
 

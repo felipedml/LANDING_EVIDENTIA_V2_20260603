@@ -1543,6 +1543,59 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SEÇÃO — MANUAIS DO USUÁRIO */}
+      <section className="py-20 relative z-10 border-t bg-transition" style={{ borderColor: "var(--card-border)", backgroundColor: "var(--bg-secondary)" }}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-14 fade-up">
+            <div className="badge-gold text-xs font-mono-jet font-bold uppercase tracking-widest w-fit px-3 py-1.5 rounded-full mb-4 mx-auto">
+              DOCUMENTAÇÃO OFICIAL
+            </div>
+            <h2 className="font-jakarta font-extrabold text-3xl md:text-4xl text-[var(--text-primary)] transition-colors">
+              Do zero ao resultado: tudo documentado para você
+            </h2>
+            <p className="mt-4 text-base text-[var(--text-secondary)] transition-colors leading-relaxed">
+              Dois manuais completos, escritos com a clareza que é a marca do Evidentia — para que você extraia o máximo do app desde o primeiro acesso.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto fade-up">
+            <div className="glass-card rounded-2xl overflow-hidden border bg-transition flex flex-col group" style={{ borderColor: "var(--card-border)" }}>
+              <div className="relative overflow-hidden bg-[var(--bg-primary)]" style={{ minHeight: "260px" }}>
+                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: "radial-gradient(ellipse at top left, var(--gold-vibrant), transparent 70%)" }} />
+                <img src="/manual-geral-evidentia-novo-img.png" alt="Capa do Manual do Evidentia" className="w-full h-64 object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" />
+              </div>
+              <div className="p-6 flex flex-col flex-1">
+                <span className="text-[10px] font-mono-jet font-bold text-[var(--gold-vibrant)] uppercase tracking-widest mb-2">Manual do Usuário</span>
+                <h3 className="font-jakarta font-extrabold text-xl text-[var(--text-primary)] mb-3 transition-colors">Manual do Evidentia</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4 transition-colors">O guia definitivo para dominar cada etapa da pesquisa bibliográfica — da configuração inicial na FASE 0 à interpretação dos dados, passando por cada recurso do app até a aplicação dos resultados na produção acadêmica com rigor ABNT.</p>
+                <ul className="space-y-2 mb-6 flex-1">
+                  {["Passo a passo da FASE 0 à análise final","Como interpretar cada gráfico e métrica","Uso dos resultados na escrita acadêmica","Exportações, fichamentos e relatórios"].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]"><span className="mt-0.5 text-[var(--gold-vibrant)] flex-shrink-0">✓</span><span>{item}</span></li>
+                  ))}
+                </ul>
+                <a href="https://chk.eduzz.com/6W4G1RYY0Z" target="_blank" rel="noopener noreferrer" className="btn-gold w-full text-center text-sm font-bold py-3 rounded-xl transition-all duration-200 hover:opacity-90 block" style={{ background: "linear-gradient(135deg, var(--gold-vibrant), #c49a28)", color: "#0a0a0a" }}>Acessar Manual →</a>
+              </div>
+            </div>
+            <div className="glass-card rounded-2xl overflow-hidden border bg-transition flex flex-col group" style={{ borderColor: "var(--card-border)" }}>
+              <div className="relative overflow-hidden bg-[var(--bg-primary)]" style={{ minHeight: "260px" }}>
+                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ background: "radial-gradient(ellipse at top right, var(--gold-vibrant), transparent 70%)" }} />
+                <img src="/manual-apis-evidentia-img.png" alt="Capa do Manual de APIs e Credenciais" className="w-full h-64 object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" />
+              </div>
+              <div className="p-6 flex flex-col flex-1">
+                <span className="text-[10px] font-mono-jet font-bold text-[var(--gold-vibrant)] uppercase tracking-widest mb-2">Guia Técnico</span>
+                <h3 className="font-jakarta font-extrabold text-xl text-[var(--text-primary)] mb-3 transition-colors">Manual de APIs e Credenciais</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4 transition-colors">Sem jargão técnico: um roteiro visual e direto para criar e configurar suas chaves de API e credenciais — o que o Evidentia precisa para operar com potência máxima, acessível a qualquer pesquisador.</p>
+                <ul className="space-y-2 mb-6 flex-1">
+                  {["Criação de chaves API passo a passo","Configuração sem conhecimento técnico","Quais credenciais são necessárias e por quê","Ativação completa em menos de 15 minutos"].map((item) => (
+                    <li key={item} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]"><span className="mt-0.5 text-[var(--gold-vibrant)] flex-shrink-0">✓</span><span>{item}</span></li>
+                  ))}
+                </ul>
+                <a href="https://chk.eduzz.com/6W4G1RYY0Z" target="_blank" rel="noopener noreferrer" className="w-full text-center text-sm font-bold py-3 rounded-xl transition-all duration-200 block border-2" style={{ borderColor: "var(--gold-vibrant)", color: "var(--gold-vibrant)", backgroundColor: "transparent" }} onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(216,166,60,0.08)"; }} onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent"; }}>Acessar Manual →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* SEÇÃO 6 — AUTORIDADE / QUEM CRIOU */}
       <section id="author" className="py-20 relative z-10 bg-transition" style={{ backgroundColor: "var(--bg-primary)" }}>
         <div className="max-w-7xl mx-auto px-6">
@@ -1710,60 +1763,6 @@ export default function Home() {
                   GARANTIR AGORA →
                 </a>
               </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO BÔNUS — MANUAIS INCLUÍDOS */}
-      <section className="py-24 relative z-10 border-t bg-transition overflow-hidden" style={{ borderColor: "var(--card-border)", backgroundColor: "var(--bg-secondary)" }}>
-        {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06] blur-3xl pointer-events-none bg-[var(--gold-vibrant)]" />
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          {/* Section eyebrow */}
-          <div className="text-center mb-12 fade-up">
-            <span className="badge-gold text-xs font-mono-jet font-bold uppercase tracking-widest px-4 py-2 rounded-full">
-              🎁 BÔNUS EXCLUSIVOS
-            </span>
-            <h2 className="font-jakarta font-extrabold text-3xl md:text-4xl text-[var(--text-primary)] mt-5 transition-colors">
-              Além da Assinatura, Você Leva Estes Bônus
-            </h2>
-            <p className="mt-3 text-base text-[var(--text-secondary)] max-w-xl mx-auto transition-colors">
-              Incluídos gratuitamente para quem garantir acesso agora — sem custo adicional.
-            </p>
-          </div>
-
-          {/* Bonus cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-
-            {/* Bonus 1 */}
-            <div className="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/45 transition-all duration-300 fade-up bg-transition flex flex-col">
-              <span className="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full w-fit">BÔNUS 1</span>
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mt-3 transition-colors">Manual de Uso e Interpretação de Dados do Evidentia</h3>
-              <div className="mt-4 rounded-xl overflow-hidden border border-[var(--card-border)]">
-                <img
-                  src="/manual-evidentia-img.png"
-                  alt="Manual de Uso e Interpretação de Dados do Evidentia"
-                  className="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.03]"
-                />
-              </div>
-              <div className="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4 transition-colors">Incluso gratuitamente na sua assinatura</div>
-            </div>
-
-            {/* Bonus 2 */}
-            <div className="glass-card rounded-2xl p-6 border-2 border-dashed border-[var(--gold-vibrant)]/25 hover:border-[var(--gold-vibrant)]/45 transition-all duration-300 fade-up bg-transition flex flex-col">
-              <span className="badge-gold text-xs font-mono-jet font-bold px-3 py-1 rounded-full w-fit">BÔNUS 2</span>
-              <h3 className="text-lg font-bold text-[var(--text-primary)] mt-3 transition-colors">Manual de Configuração de APIs de Fontes Bibliográficas</h3>
-              <div className="mt-4 rounded-xl overflow-hidden border border-[var(--card-border)]">
-                <img
-                  src="/manual-apis-evidentia-img.png"
-                  alt="Manual de Configuração de APIs de Fontes Bibliográficas"
-                  className="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.03]"
-                />
-              </div>
-              <div className="text-[var(--gold-vibrant)] text-xs font-mono-jet font-semibold mt-4 transition-colors">Incluso gratuitamente na sua assinatura</div>
             </div>
 
           </div>
