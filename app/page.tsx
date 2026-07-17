@@ -874,11 +874,11 @@ export default function Home() {
             className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border bg-black aspect-video transition-all duration-300" 
             style={{ borderColor: "var(--card-border)" }}
           >
-            <iframe 
+            <iframe
               className="w-full h-full border-0"
-              src="https://www.youtube.com/embed/abMIPIB5lcE" 
-              title="Aula Gratuita — Pesquisa Bibliográfica em Segundos" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              src="https://www.youtube.com/embed/0GwCgWB0q2Y?si=lco9O2aADX-qNmcE"
+              title="Aula Gratuita — Pesquisa Bibliográfica em Segundos"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
           </div>
@@ -915,11 +915,11 @@ export default function Home() {
             className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border bg-black aspect-video transition-all duration-300" 
             style={{ borderColor: "var(--card-border)" }}
           >
-            <iframe 
+            <iframe
               className="w-full h-full border-0"
-              src="https://www.youtube.com/embed/_nzGxswKnn8" 
-              title="Tour Virtual pelo EvidentIA" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              src="https://www.youtube.com/embed/_nzGxswKnn8"
+              title="Tour Virtual pelo EvidentIA"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
           </div>
